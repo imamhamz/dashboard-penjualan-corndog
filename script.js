@@ -1,190 +1,813 @@
 // ==========================================
 // DASHBOARD PENJUALAN CORNDOG
-// Koneksi ke Supabase
+// SUPABASE + TRANSAKSI
 // ==========================================
 
-// URL Supabase
-const SUPABASE_URL = "https://ihwgxwxbrbbqhjmozx.supabase.co";
+const SUPABASE_URL =
+    "https://ihwgxwxbrbbqhjmozx.supabase.co";
 
-// Publishable / Anon Key
 const SUPABASE_ANON_KEY =
     "sb_publishable_RgEkyHjtoz0QWB10oUwA_g_Ngxpdp1q";
 
-
-// ==========================================
-// LOAD SUPABASE
-// ==========================================
-
-const supabaseScript = document.createElement("script");
-
-supabaseScript.src =
-    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
-
-supabaseScript.onload = async function () {
-
-    console.log("Library Supabase berhasil dimuat");
-
-    const { createClient } = window.supabase;
-
-    const supabase = createClient(
+const supabaseClient =
+    window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_ANON_KEY
     );
 
-    console.log("Supabase berhasil terhubung");
 
-    // Pastikan HTML sudah selesai dimuat
-    if (document.readyState === "loading") {
+// ==========================================
+// VARIABEL
+// ==========================================
 
-        document.addEventListener("DOMContentLoaded", function () {
-            loadDashboard(supabase);
-        });
+let products = [];
+let cart = [];
 
-    } else {
 
-        loadDashboard(supabase);
+// ==========================================
+// SAAT HALAMAN SELESAI DIMUAT
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        setTanggalHariIni();
+
+        loadProducts();
+
+        loadDashboard();
+
+        setupButtons();
+
+    }
+);
+
+
+// ==========================================
+// TANGGAL HARI INI
+// ==========================================
+
+function setTanggalHariIni() {
+
+    const input =
+        document.getElementById("saleDate");
+
+    if (!input) return;
+
+    const today =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+    input.value = today;
+}
+
+
+// ==========================================
+// BUTTON
+// ==========================================
+
+function setupButtons() {
+
+    const btnTambah =
+        document.getElementById(
+            "btnTambahTransaksi"
+        );
+
+    const btnTutup =
+        document.getElementById(
+            "btnTutupForm"
+        );
+
+    const btnTambahProduk =
+        document.getElementById(
+            "btnTambahProduk"
+        );
+
+    const btnSimpan =
+        document.getElementById(
+            "btnSimpanTransaksi"
+        );
+
+
+    if (btnTambah) {
+
+        btnTambah.addEventListener(
+            "click",
+            function () {
+
+                const form =
+                    document.getElementById(
+                        "formTransaksi"
+                    );
+
+                form.classList.remove(
+                    "hidden"
+                );
+
+                window.scrollTo({
+                    top: form.offsetTop - 20,
+                    behavior: "smooth"
+                });
+
+            }
+        );
 
     }
 
-};
 
-supabaseScript.onerror = function () {
+    if (btnTutup) {
 
-    console.error(
-        "Gagal memuat library Supabase"
-    );
+        btnTutup.addEventListener(
+            "click",
+            function () {
 
-};
+                document
+                    .getElementById(
+                        "formTransaksi"
+                    )
+                    .classList.add(
+                        "hidden"
+                    );
 
-document.head.appendChild(supabaseScript);
+            }
+        );
+
+    }
+
+
+    if (btnTambahProduk) {
+
+        btnTambahProduk.addEventListener(
+            "click",
+            addProductToCart
+        );
+
+    }
+
+
+    if (btnSimpan) {
+
+        btnSimpan.addEventListener(
+            "click",
+            saveTransaction
+        );
+
+    }
+
+}
 
 
 // ==========================================
-// LOAD DASHBOARD
+// AMBIL PRODUK DARI SUPABASE
 // ==========================================
 
-async function loadDashboard(supabase) {
-
-    console.log("Memuat data dashboard...");
+async function loadProducts() {
 
     try {
 
-        // ======================================
-        // 1. TOTAL PRODUK
-        // ======================================
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("product")
+            .select("*")
+            .order("id");
+
+        if (error) {
+            throw error;
+        }
+
+        products = data || [];
+
+        displayProducts();
+
+        populateProductSelect();
+
+        updateTotalProduk();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal mengambil produk:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// TAMPILKAN PRODUK DI TABEL
+// ==========================================
+
+function displayProducts() {
+
+    const table =
+        document.getElementById(
+            "productTable"
+        );
+
+    if (!table) return;
+
+
+    if (products.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="4">
+                    Belum ada produk
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+        products.map(function (product) {
+
+            return `
+                <tr>
+
+                    <td>
+                        ${product.id}
+                    </td>
+
+                    <td>
+                        ${product.name}
+                    </td>
+
+                    <td>
+                        ${product.category || "-"}
+                    </td>
+
+                    <td>
+                        ${formatRupiah(product.price)}
+                    </td>
+
+                </tr>
+            `;
+
+        }).join("");
+
+}
+
+
+// ==========================================
+// DROPDOWN PRODUK
+// ==========================================
+
+function populateProductSelect() {
+
+    const select =
+        document.getElementById(
+            "productSelect"
+        );
+
+    if (!select) return;
+
+
+    select.innerHTML = `
+        <option value="">
+            Pilih produk
+        </option>
+    `;
+
+
+    products.forEach(function (product) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.value = product.id;
+
+        option.textContent =
+            `${product.name} - ${formatRupiah(product.price)}`;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+// ==========================================
+// TAMBAH PRODUK KE CART
+// ==========================================
+
+function addProductToCart() {
+
+    const select =
+        document.getElementById(
+            "productSelect"
+        );
+
+    const quantityInput =
+        document.getElementById(
+            "quantity"
+        );
+
+
+    const productId =
+        Number(select.value);
+
+    const quantity =
+        Number(quantityInput.value);
+
+
+    if (!productId) {
+
+        alert(
+            "Silakan pilih produk terlebih dahulu."
+        );
+
+        return;
+
+    }
+
+
+    if (!quantity || quantity < 1) {
+
+        alert(
+            "Jumlah produk minimal 1."
+        );
+
+        return;
+
+    }
+
+
+    const product =
+        products.find(function (item) {
+
+            return Number(item.id) === productId;
+
+        });
+
+
+    if (!product) {
+
+        alert(
+            "Produk tidak ditemukan."
+        );
+
+        return;
+
+    }
+
+
+    const existing =
+        cart.find(function (item) {
+
+            return Number(item.product_id) === productId;
+
+        });
+
+
+    if (existing) {
+
+        existing.quantity += quantity;
+
+    } else {
+
+        cart.push({
+
+            product_id: product.id,
+
+            name: product.name,
+
+            quantity: quantity,
+
+            unit_price: Number(product.price)
+
+        });
+
+    }
+
+
+    renderCart();
+
+    select.value = "";
+
+    quantityInput.value = 1;
+
+}
+
+
+// ==========================================
+// TAMPILKAN CART
+// ==========================================
+
+function renderCart() {
+
+    const cartContainer =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    if (!cartContainer) return;
+
+
+    if (cart.length === 0) {
+
+        cartContainer.innerHTML = `
+            <p class="empty-cart">
+                Belum ada produk
+            </p>
+        `;
+
+        updateTransactionTotal();
+
+        return;
+
+    }
+
+
+    cartContainer.innerHTML =
+        cart.map(function (item, index) {
+
+            const subtotal =
+                item.quantity *
+                item.unit_price;
+
+
+            return `
+                <div class="cart-item">
+
+                    <div class="cart-item-info">
+
+                        <strong>
+                            ${item.name}
+                        </strong>
+
+                        <span>
+                            ${item.quantity} ×
+                            ${formatRupiah(item.unit_price)}
+                            =
+                            ${formatRupiah(subtotal)}
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="btn-remove"
+                        onclick="removeFromCart(${index})"
+                    >
+                        Hapus
+                    </button>
+
+                </div>
+            `;
+
+        }).join("");
+
+
+    updateTransactionTotal();
+
+}
+
+
+// ==========================================
+// HAPUS PRODUK DARI CART
+// ==========================================
+
+function removeFromCart(index) {
+
+    cart.splice(index, 1);
+
+    renderCart();
+
+}
+
+
+// ==========================================
+// HITUNG TOTAL
+// ==========================================
+
+function calculateTotal() {
+
+    return cart.reduce(
+        function (total, item) {
+
+            return total +
+                (
+                    item.quantity *
+                    item.unit_price
+                );
+
+        },
+        0
+    );
+
+}
+
+
+function updateTransactionTotal() {
+
+    const element =
+        document.getElementById(
+            "transactionTotal"
+        );
+
+    if (!element) return;
+
+    element.textContent =
+        formatRupiah(
+            calculateTotal()
+        );
+
+}
+
+
+// ==========================================
+// SIMPAN TRANSAKSI
+// ==========================================
+
+async function saveTransaction() {
+
+    if (cart.length === 0) {
+
+        alert(
+            "Tambahkan minimal satu produk."
+        );
+
+        return;
+
+    }
+
+
+    const saleDate =
+        document.getElementById(
+            "saleDate"
+        ).value;
+
+
+    const payment =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        );
+
+
+    if (!payment) {
+
+        alert(
+            "Pilih metode pembayaran."
+        );
+
+        return;
+
+    }
+
+
+    const totalAmount =
+        calculateTotal();
+
+
+    try {
+
+        // ==================================
+        // SIMPAN KE SALES
+        // ==================================
+
+        const {
+            data: sale,
+            error: saleError
+        } = await supabaseClient
+            .from("sales")
+            .insert({
+
+                sale_date: saleDate,
+
+                payment_method:
+                    payment.value,
+
+                total_amount:
+                    totalAmount
+
+            })
+            .select()
+            .single();
+
+
+        if (saleError) {
+
+            throw saleError;
+
+        }
+
+
+        // ==================================
+        // SIAPKAN SALE ITEMS
+        // ==================================
+
+        const saleItems =
+            cart.map(function (item) {
+
+                return {
+
+                    sale_id: sale.id,
+
+                    product_id:
+                        item.product_id,
+
+                    quantity:
+                        item.quantity,
+
+                    unit_price:
+                        item.unit_price
+
+                };
+
+            });
+
+
+        // ==================================
+        // SIMPAN SALE ITEMS
+        // ==================================
+
+        const {
+            error: itemError
+        } = await supabaseClient
+            .from("sale_items")
+            .insert(saleItems);
+
+
+        if (itemError) {
+
+            throw itemError;
+
+        }
+
+
+        // ==================================
+        // BERHASIL
+        // ==================================
+
+        alert(
+            "Transaksi berhasil disimpan!"
+        );
+
+
+        cart = [];
+
+        renderCart();
+
+        document.querySelectorAll(
+            'input[name="payment"]'
+        ).forEach(function (radio) {
+
+            radio.checked = false;
+
+        });
+
+
+        document
+            .getElementById(
+                "formTransaksi"
+            )
+            .classList.add(
+                "hidden"
+            );
+
+
+        await loadDashboard();
+
+        await loadSales();
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal menyimpan transaksi:",
+            error
+        );
+
+        alert(
+            "Transaksi gagal disimpan. Cek Console browser."
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// DASHBOARD
+// ==========================================
+
+async function loadDashboard() {
+
+    try {
+
+        // TOTAL PRODUK
 
         const {
             count: totalProduk,
             error: productError
-        } = await supabase
+        } = await supabaseClient
             .from("product")
             .select("*", {
                 count: "exact",
                 head: true
             });
 
+
         if (productError) {
+
             throw productError;
+
         }
 
 
-        // ======================================
-        // 2. TOTAL TRANSAKSI
-        // ======================================
+        // TOTAL TRANSAKSI
 
         const {
             count: totalTransaksi,
             error: salesError
-        } = await supabase
+        } = await supabaseClient
             .from("sales")
             .select("*", {
                 count: "exact",
                 head: true
             });
 
+
         if (salesError) {
+
             throw salesError;
+
         }
 
 
-        // ======================================
-        // 3. TOTAL PENJUALAN
-        // ======================================
+        // TOTAL PENJUALAN
 
         const {
             data: salesData,
             error: amountError
-        } = await supabase
+        } = await supabaseClient
             .from("sales")
             .select("total_amount");
 
+
         if (amountError) {
+
             throw amountError;
+
         }
 
 
         let totalPenjualan = 0;
 
-        salesData.forEach(function (sale) {
 
-            totalPenjualan +=
-                Number(sale.total_amount) || 0;
+        salesData.forEach(
+            function (sale) {
 
-        });
+                totalPenjualan +=
+                    Number(
+                        sale.total_amount
+                    ) || 0;
 
-
-        // ======================================
-        // 4. AMBIL ELEMENT HTML
-        // ======================================
-
-        const produkElement =
-            document.getElementById("totalProduk");
-
-        const transaksiElement =
-            document.getElementById("totalTransaksi");
-
-        const penjualanElement =
-            document.getElementById("totalPenjualan");
+            }
+        );
 
 
-        // ======================================
-        // 5. TAMPILKAN DATA
-        // ======================================
+        // TAMPILKAN
 
-        if (produkElement) {
-
-            produkElement.textContent =
-                totalProduk || 0;
-
-        }
+        document.getElementById(
+            "totalProduk"
+        ).textContent =
+            totalProduk || 0;
 
 
-        if (transaksiElement) {
-
-            transaksiElement.textContent =
-                totalTransaksi || 0;
-
-        }
+        document.getElementById(
+            "totalTransaksi"
+        ).textContent =
+            totalTransaksi || 0;
 
 
-        if (penjualanElement) {
-
-            penjualanElement.textContent =
-                "Rp " +
-                totalPenjualan.toLocaleString("id-ID");
-
-        }
-
-
-        console.log("================================");
-        console.log("DASHBOARD BERHASIL DIMUAT");
-        console.log("Total Produk:", totalProduk);
-        console.log("Total Transaksi:", totalTransaksi);
-        console.log("Total Penjualan:", totalPenjualan);
-        console.log("================================");
+        document.getElementById(
+            "totalPenjualan"
+        ).textContent =
+            formatRupiah(
+                totalPenjualan
+            );
 
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             "Gagal memuat dashboard:",
@@ -192,5 +815,160 @@ async function loadDashboard(supabase) {
         );
 
     }
+
+}
+
+
+// ==========================================
+// RIWAYAT TRANSAKSI
+// ==========================================
+
+async function loadSales() {
+
+    const table =
+        document.getElementById(
+            "salesTable"
+        );
+
+    if (!table) return;
+
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("sales")
+            .select(
+                "id, sale_date, payment_method, total_amount"
+            )
+            .order(
+                "id",
+                {
+                    ascending: false
+                }
+            )
+            .limit(20);
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        if (!data || data.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        Belum ada transaksi
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        table.innerHTML =
+            data.map(function (sale) {
+
+                return `
+                    <tr>
+
+                        <td>
+                            ${sale.id}
+                        </td>
+
+                        <td>
+                            ${formatDate(
+                                sale.sale_date
+                            )}
+                        </td>
+
+                        <td>
+                            ${sale.payment_method}
+                        </td>
+
+                        <td>
+                            ${formatRupiah(
+                                sale.total_amount
+                            )}
+                        </td>
+
+                    </tr>
+                `;
+
+            }).join("");
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal memuat transaksi:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// TOTAL PRODUK
+// ==========================================
+
+function updateTotalProduk() {
+
+    const element =
+        document.getElementById(
+            "totalProduk"
+        );
+
+    if (element) {
+
+        element.textContent =
+            products.length;
+
+    }
+
+}
+
+
+// ==========================================
+// FORMAT RUPIAH
+// ==========================================
+
+function formatRupiah(value) {
+
+    return "Rp " +
+        Number(value || 0)
+            .toLocaleString("id-ID");
+
+}
+
+
+// ==========================================
+// FORMAT TANGGAL
+// ==========================================
+
+function formatDate(date) {
+
+    if (!date) return "-";
+
+    const parts =
+        date.split("-");
+
+    if (parts.length !== 3) {
+        return date;
+    }
+
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
 
 }
