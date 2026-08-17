@@ -848,7 +848,10 @@ async function loadSales() {
                 }
             )
             .limit(20);
-
+        
+        console.log("DATA SALES:", data);
+        console.log("ERROR SALES:", error);
+        
         if (error) {
             throw error;
         }
