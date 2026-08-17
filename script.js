@@ -900,6 +900,11 @@ async function loadSales() {
                             )}
                         </td>
 
+                        </td>
+                            <button onclick="deleteTransaction(${sale.id})">
+                                Hapus
+                            </button>
+                        </td>
                     </tr>
                 `;
 
