@@ -977,3 +977,51 @@ function formatDate(date) {
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
 
 }
+async function deleteTransaction(saleId) {
+
+    const yakin = confirm(
+        "Yakin ingin menghapus transaksi ini?"
+    );
+
+    if (!yakin) {
+        return;
+    }
+
+    try {
+
+        const { error: itemError } =
+            await supabaseClient
+                .from("sale_items")
+                .delete()
+                .eq("sale_id", saleId);
+
+        if (itemError) {
+            throw itemError;
+        }
+
+        const { error: saleError } =
+            await supabaseClient
+                .from("sales")
+                .delete()
+                .eq("id", saleId);
+
+        if (saleError) {
+            throw saleError;
+        }
+
+        alert("Transaksi berhasil dihapus.");
+
+        await loadSales();
+        await loadDashboard();
+
+    } catch (error) {
+
+        console.error(
+            "Gagal menghapus transaksi:",
+            error
+        );
+
+        alert("Transaksi gagal dihapus.");
+
+    }
+}
