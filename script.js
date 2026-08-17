@@ -37,7 +37,9 @@ document.addEventListener(
         loadProducts();
 
         loadDashboard();
-
+        
+        loadSales();
+        
         setupButtons();
 
     }
