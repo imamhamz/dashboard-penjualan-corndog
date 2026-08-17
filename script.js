@@ -3,14 +3,16 @@
 // Koneksi ke Supabase
 // ==========================================
 
-// URL Supabase kamu
+// URL Supabase
 const SUPABASE_URL = "https://ihwgxwxbrbbqhjmozx.supabase.co";
 
-// MASUKKAN ANON/PUBLIC KEY SUPABASE DI SINI
-const SUPABASE_ANON_KEY = "sb_publishable_RgEkyhJtoz0QWB10oUwA_g_Ngxpdp1q";
+// Publishable / Anon Key
+const SUPABASE_ANON_KEY =
+    "sb_publishable_RgEkyHjtoz0QWB10oUwA_g_Ngxpdp1q";
+
 
 // ==========================================
-// Memuat library Supabase
+// LOAD SUPABASE
 // ==========================================
 
 const supabaseScript = document.createElement("script");
@@ -20,6 +22,8 @@ supabaseScript.src =
 
 supabaseScript.onload = async function () {
 
+    console.log("Library Supabase berhasil dimuat");
+
     const { createClient } = window.supabase;
 
     const supabase = createClient(
@@ -27,8 +31,29 @@ supabaseScript.onload = async function () {
         SUPABASE_ANON_KEY
     );
 
-    // Jalankan dashboard
-    await loadDashboard(supabase);
+    console.log("Supabase berhasil terhubung");
+
+    // Pastikan HTML sudah selesai dimuat
+    if (document.readyState === "loading") {
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadDashboard(supabase);
+        });
+
+    } else {
+
+        loadDashboard(supabase);
+
+    }
+
+};
+
+supabaseScript.onerror = function () {
+
+    console.error(
+        "Gagal memuat library Supabase"
+    );
+
 };
 
 document.head.appendChild(supabaseScript);
@@ -40,50 +65,58 @@ document.head.appendChild(supabaseScript);
 
 async function loadDashboard(supabase) {
 
+    console.log("Memuat data dashboard...");
+
     try {
 
-        // --------------------------------------
+        // ======================================
         // 1. TOTAL PRODUK
-        // --------------------------------------
+        // ======================================
 
-        const { count: totalProduk, error: productError } =
-            await supabase
-                .from("product")
-                .select("*", {
-                    count: "exact",
-                    head: true
-                });
+        const {
+            count: totalProduk,
+            error: productError
+        } = await supabase
+            .from("product")
+            .select("*", {
+                count: "exact",
+                head: true
+            });
 
         if (productError) {
             throw productError;
         }
 
 
-        // --------------------------------------
+        // ======================================
         // 2. TOTAL TRANSAKSI
-        // --------------------------------------
+        // ======================================
 
-        const { count: totalTransaksi, error: salesError } =
-            await supabase
-                .from("sales")
-                .select("*", {
-                    count: "exact",
-                    head: true
-                });
+        const {
+            count: totalTransaksi,
+            error: salesError
+        } = await supabase
+            .from("sales")
+            .select("*", {
+                count: "exact",
+                head: true
+            });
 
         if (salesError) {
             throw salesError;
         }
 
 
-        // --------------------------------------
+        // ======================================
         // 3. TOTAL PENJUALAN
-        // --------------------------------------
+        // ======================================
 
-        const { data: salesData, error: amountError } =
-            await supabase
-                .from("sales")
-                .select("total_amount");
+        const {
+            data: salesData,
+            error: amountError
+        } = await supabase
+            .from("sales")
+            .select("total_amount");
 
         if (amountError) {
             throw amountError;
@@ -94,14 +127,15 @@ async function loadDashboard(supabase) {
 
         salesData.forEach(function (sale) {
 
-            totalPenjualan += Number(sale.total_amount) || 0;
+            totalPenjualan +=
+                Number(sale.total_amount) || 0;
 
         });
 
 
-        // --------------------------------------
-        // TAMPILKAN KE DASHBOARD
-        // --------------------------------------
+        // ======================================
+        // 4. AMBIL ELEMENT HTML
+        // ======================================
 
         const produkElement =
             document.getElementById("totalProduk");
@@ -113,13 +147,23 @@ async function loadDashboard(supabase) {
             document.getElementById("totalPenjualan");
 
 
+        // ======================================
+        // 5. TAMPILKAN DATA
+        // ======================================
+
         if (produkElement) {
-            produkElement.textContent = totalProduk || 0;
+
+            produkElement.textContent =
+                totalProduk || 0;
+
         }
 
 
         if (transaksiElement) {
-            transaksiElement.textContent = totalTransaksi || 0;
+
+            transaksiElement.textContent =
+                totalTransaksi || 0;
+
         }
 
 
@@ -132,14 +176,18 @@ async function loadDashboard(supabase) {
         }
 
 
-        console.log("Dashboard berhasil dimuat");
+        console.log("================================");
+        console.log("DASHBOARD BERHASIL DIMUAT");
+        console.log("Total Produk:", totalProduk);
+        console.log("Total Transaksi:", totalTransaksi);
+        console.log("Total Penjualan:", totalPenjualan);
+        console.log("================================");
 
-    }
 
-    catch (error) {
+    } catch (error) {
 
         console.error(
-            "Terjadi kesalahan:",
+            "Gagal memuat dashboard:",
             error
         );
 
