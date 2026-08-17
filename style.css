@@ -592,3 +592,170 @@ table button:hover {
     }
 
 }
+
+/* ==========================================
+   MOBILE POS - iPHONE
+========================================== */
+
+@media (max-width: 768px) {
+
+    body {
+        background: #f4f6f9;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 18px 16px 40px;
+    }
+
+    /* HEADER */
+
+    .header {
+        margin-bottom: 20px;
+        gap: 14px;
+    }
+
+    .header h1 {
+        font-size: 25px;
+        line-height: 1.2;
+        margin-bottom: 4px;
+    }
+
+    .header p {
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 14px 18px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+
+    /* DASHBOARD */
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        padding: 18px 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .card span {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .card strong {
+        font-size: 25px;
+    }
+
+    /* SECTION */
+
+    .section {
+        padding: 18px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .section-header {
+        margin-bottom: 14px;
+    }
+
+    .section-header h2 {
+        font-size: 21px;
+    }
+
+    .section-header p {
+        font-size: 13px;
+    }
+
+    /* TABLE */
+
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    th,
+    td {
+        padding: 11px 10px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    th {
+        font-size: 12px;
+    }
+
+    /* TRANSACTION FORM */
+
+    .transaction-form {
+        padding: 18px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    .form-header {
+        margin-bottom: 18px;
+    }
+
+    .form-header h2 {
+        font-size: 21px;
+    }
+
+    .form-header p {
+        font-size: 13px;
+    }
+
+    .product-input {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .btn-secondary {
+        width: 100%;
+        padding: 13px;
+    }
+
+    /* CART */
+
+    .cart-item {
+        padding: 12px;
+    }
+
+    /* TOTAL */
+
+    .total-box {
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    .total-box strong {
+        font-size: 21px;
+    }
+
+    /* PAYMENT */
+
+    .payment-methods {
+        gap: 8px;
+    }
+
+    .payment-option {
+        padding: 11px 13px;
+        font-size: 14px;
+    }
+
+}
