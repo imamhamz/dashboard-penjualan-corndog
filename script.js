@@ -822,7 +822,6 @@ async function loadDashboard() {
 // ==========================================
 // RIWAYAT TRANSAKSI
 // ==========================================
-
 async function loadSales() {
 
     const table =
@@ -831,7 +830,6 @@ async function loadSales() {
         );
 
     if (!table) return;
-
 
     try {
 
@@ -851,28 +849,22 @@ async function loadSales() {
             )
             .limit(20);
 
-
         if (error) {
-
             throw error;
-
         }
-
 
         if (!data || data.length === 0) {
 
             table.innerHTML = `
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         Belum ada transaksi
                     </td>
                 </tr>
             `;
 
             return;
-
         }
-
 
         table.innerHTML =
             data.map(function (sale) {
@@ -900,16 +892,17 @@ async function loadSales() {
                             )}
                         </td>
 
-                        </td>
-                            <button onclick="deleteTransaction(${sale.id})">
+                        <td>
+                            <button
+                                onclick="deleteTransaction(${sale.id})">
                                 Hapus
                             </button>
                         </td>
+
                     </tr>
                 `;
 
             }).join("");
-
 
     }
 
@@ -923,7 +916,6 @@ async function loadSales() {
     }
 
 }
-
 
 // ==========================================
 // TOTAL PRODUK
