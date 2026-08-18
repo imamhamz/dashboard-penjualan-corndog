@@ -1186,3 +1186,154 @@ tbody tr:hover td {
         padding-left: 12px;
     }
 }
+
+/* =========================================================
+   IDENTITAS PEMBELI
+========================================================= */
+
+.customer-info {
+    margin-top: 15px;
+    padding: 15px;
+
+    background: #fffdfa;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    box-shadow:
+        0 4px 14px rgba(65, 38, 22, 0.04);
+}
+
+
+/* HEADER */
+
+.customer-info .form-header {
+    margin-bottom: 13px;
+}
+
+.customer-info .form-header h3 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.customer-info .form-header p {
+    margin-top: 4px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+
+/* FORM GROUP */
+
+.customer-info .form-group {
+    margin-bottom: 10px;
+}
+
+.customer-info .form-group:last-child {
+    margin-bottom: 0;
+}
+
+
+/* LABEL */
+
+.customer-info label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #66584f;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.customer-info .required {
+    color: var(--brown);
+}
+
+
+/* INPUT & TEXTAREA */
+
+.customer-info input,
+.customer-info textarea {
+    display: block;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 11px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+/* NAMA */
+
+.customer-info input {
+    height: 36px;
+
+    padding: 0 10px;
+}
+
+
+/* CATATAN */
+
+.customer-info textarea {
+    min-height: 56px;
+
+    padding: 8px 10px;
+
+    line-height: 1.4;
+
+    resize: vertical;
+}
+
+
+/* PLACEHOLDER */
+
+.customer-info input::placeholder,
+.customer-info textarea::placeholder {
+    color: #b2a49b;
+}
+
+
+/* FOCUS */
+
+.customer-info input:focus,
+.customer-info textarea:focus {
+    border-color: var(--brown);
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(139, 69, 31, 0.08);
+}
+
+
+/* HOVER */
+
+.customer-info input:hover,
+.customer-info textarea:hover {
+    border-color: #d5c3b5;
+}
