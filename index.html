@@ -541,7 +541,65 @@
 
     </main>
 
+<!-- =====================================================
+     MODAL PREVIEW STRUK
+===================================================== -->
 
+<div
+    id="receiptModal"
+    class="receipt-modal hidden"
+>
+
+    <div class="receipt-overlay"></div>
+
+    <div class="receipt-dialog">
+
+        <div class="receipt-header">
+
+            <div>
+                <h2>Struk Transaksi</h2>
+                <p>Preview sebelum dicetak</p>
+            </div>
+
+            <button
+                type="button"
+                id="btnCloseReceipt"
+                class="receipt-close"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="receiptContent"
+            class="receipt-content"
+        >
+        </div>
+
+        <div class="receipt-actions">
+
+            <button
+                type="button"
+                id="btnCloseReceiptBottom"
+                class="btn-secondary"
+            >
+                Tutup
+            </button>
+
+            <button
+                type="button"
+                id="btnPrintReceipt"
+                class="btn-pay"
+            >
+                🖨️ Cetak Struk
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
     <!-- =====================================================
          RIWAYAT TRANSAKSI
