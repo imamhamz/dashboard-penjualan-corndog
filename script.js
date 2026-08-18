@@ -244,7 +244,7 @@ function displayProducts() {
 
             const categoryMatch =
                 activeCategory === "all" ||
-                productCategory ===
+                productCategory.includes(
                     activeCategory.toLowerCase();
 
 
