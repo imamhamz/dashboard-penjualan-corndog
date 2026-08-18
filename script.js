@@ -1340,3 +1340,104 @@ async function loadSales() {
     }
 
 }
+
+// ==========================================
+// HAPUS TRANSAKSI
+// ==========================================
+
+async function deleteTransaction(id) {
+
+    const confirmDelete =
+        confirm(
+            "Yakin ingin menghapus transaksi ini?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    try {
+
+        // ==================================
+        // HAPUS DETAIL TRANSAKSI
+        // ==================================
+
+        const {
+            error: itemError
+        } = await supabaseClient
+            .from("sale_items")
+            .delete()
+            .eq(
+                "sale_id",
+                id
+            );
+
+
+        if (itemError) {
+
+            throw itemError;
+
+        }
+
+
+        // ==================================
+        // HAPUS TRANSAKSI UTAMA
+        // ==================================
+
+        const {
+            error: saleError
+        } = await supabaseClient
+            .from("sales")
+            .delete()
+            .eq(
+                "id",
+                id
+            );
+
+
+        if (saleError) {
+
+            throw saleError;
+
+        }
+
+
+        // ==================================
+        // BERHASIL
+        // ==================================
+
+        alert(
+            "Transaksi berhasil dihapus."
+        );
+
+
+        // Muat ulang riwayat
+
+        await loadSales();
+
+
+        // Muat ulang dashboard
+
+        await loadDashboard();
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal menghapus transaksi:",
+            error
+        );
+
+        alert(
+            "Transaksi gagal dihapus. Cek Console browser."
+        );
+
+    }
+
+}
