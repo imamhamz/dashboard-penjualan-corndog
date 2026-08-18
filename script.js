@@ -651,6 +651,10 @@ function addProductToCart() {
 // TAMPILKAN CART
 // ==========================================
 
+// ==========================================
+// TAMPILKAN CART
+// ==========================================
+
 function renderCart() {
 
     const cartContainer =
@@ -658,23 +662,58 @@ function renderCart() {
             "cartItems"
         );
 
-    const orderCount =
-    document.getElementById(
-        "orderCount"
-    );
+    const cartCount =
+        document.getElementById(
+            "cartCount"
+        );
 
-    if (!cartContainer) return;
 
-    if (orderCount) {
+    // ======================================
+    // HITUNG TOTAL ITEM
+    // ======================================
+
     const totalItems =
-        cart.reduce(function (total, item) {
-            return total + Number(item.quantity);
-        }, 0);
+        cart.reduce(
+            function (total, item) {
 
-    orderCount.textContent =
-        totalItems + " item";
-}
+                return total +
+                    Number(item.quantity || 0);
 
+            },
+            0
+        );
+
+
+    // ======================================
+    // UPDATE JUMLAH ITEM DI HEADER
+    // ======================================
+
+    if (cartCount) {
+
+        cartCount.textContent =
+            totalItems + " item";
+
+    }
+
+
+    // ======================================
+    // CEK CONTAINER PESANAN
+    // ======================================
+
+    if (!cartContainer) {
+
+        console.warn(
+            "Elemen #cartItems tidak ditemukan."
+        );
+
+        return;
+
+    }
+
+
+    // ======================================
+    // CART KOSONG
+    // ======================================
 
     if (cart.length === 0) {
 
@@ -691,44 +730,56 @@ function renderCart() {
     }
 
 
+    // ======================================
+    // TAMPILKAN PESANAN
+    // ======================================
+
     cartContainer.innerHTML =
-        cart.map(function (item, index) {
+        cart.map(
+            function (item, index) {
 
-            const subtotal =
-                item.quantity *
-                item.unit_price;
+                const subtotal =
+                    Number(item.quantity) *
+                    Number(item.unit_price);
 
 
-            return `
-                <div class="cart-item">
+                return `
+                    <div class="cart-item">
 
-                    <div class="cart-item-info">
+                        <div class="cart-item-info">
 
-                        <strong>
-                            ${item.name}
-                        </strong>
+                            <strong>
+                                ${item.name}
+                            </strong>
 
-                        <span>
-                            ${item.quantity} ×
-                            ${formatRupiah(item.unit_price)}
-                            =
-                            ${formatRupiah(subtotal)}
-                        </span>
+                            <span>
+                                ${item.quantity} ×
+                                ${formatRupiah(item.unit_price)}
+                                =
+                                ${formatRupiah(subtotal)}
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="btn-remove"
+                            onclick="removeFromCart(${index})"
+                        >
+                            Hapus
+                        </button>
 
                     </div>
+                `;
 
-                    <button
-                        class="btn-remove"
-                        onclick="removeFromCart(${index})"
-                    >
-                        Hapus
-                    </button>
+            }
+        ).join("");
 
-                </div>
-            `;
 
-        }).join("");
-
+    // ======================================
+    // UPDATE TOTAL HARGA
+    // ======================================
 
     updateTransactionTotal();
 
