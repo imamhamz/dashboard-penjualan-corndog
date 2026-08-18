@@ -1,6 +1,7 @@
-/* ==========================================
-   CORNDOG CAFE - MODERN POS
-========================================== */
+/* =========================================================
+   SHECORNDOG
+   MODERN CAFE POS
+========================================================= */
 
 * {
     box-sizing: border-box;
@@ -8,269 +9,526 @@
     padding: 0;
 }
 
+:root {
+    --brown: #8b451f;
+    --brown-dark: #6f3417;
+    --brown-soft: #f3e5d8;
+
+    --cream: #faf7f2;
+    --cream-dark: #f4ede5;
+
+    --white: #ffffff;
+
+    --text: #29231f;
+    --muted: #8a817a;
+
+    --border: #eadfd5;
+
+    --green: #3f7d5b;
+    --red: #b84a4a;
+
+    --shadow: 0 8px 25px rgba(74, 48, 30, 0.07);
+}
+
+
+/* =========================================================
+   DASAR
+========================================================= */
+
 html {
     scroll-behavior: smooth;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f8f4ee;
-    color: #3b2a20;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background: var(--cream);
+    color: var(--text);
+
     line-height: 1.5;
+
+    min-height: 100vh;
 }
 
-/* ==========================================
+
+/* =========================================================
    CONTAINER
-========================================== */
+========================================================= */
 
 .container {
     width: 100%;
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px 22px 50px;
+    max-width: 1250px;
+
+    margin: 0 auto;
+
+    padding: 30px 28px 50px;
 }
 
-/* ==========================================
+
+/* =========================================================
    HEADER
-========================================== */
+========================================================= */
 
 .header {
     display: flex;
+
     justify-content: space-between;
     align-items: center;
+
     gap: 20px;
-    margin-bottom: 28px;
+
+    margin-bottom: 30px;
+}
+
+
+/* BRAND */
+
+.brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.brand-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--brown);
+
+    color: white;
+
+    border-radius: 15px;
+
+    font-size: 27px;
+
+    box-shadow:
+        0 6px 15px rgba(139, 69, 31, 0.2);
 }
 
 .header h1 {
     font-size: 30px;
+
     font-weight: 800;
-    color: #3b2418;
-    letter-spacing: -0.6px;
+
+    letter-spacing: -0.7px;
+
+    color: var(--text);
 }
 
 .header p {
-    margin-top: 4px;
-    color: #8b7565;
-    font-size: 14px;
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-top: 2px;
 }
 
-/* ==========================================
+
+/* =========================================================
    BUTTON
-========================================== */
+========================================================= */
 
 button {
     border: none;
+
     cursor: pointer;
+
     font-family: inherit;
+
     font-size: 14px;
+
     font-weight: 700;
-    border-radius: 10px;
-    transition: all 0.2s ease;
+
+    border-radius: 11px;
+
+    transition:
+        0.2s ease;
 }
 
 button:active {
     transform: scale(0.97);
 }
 
+
+/* TAMBAH PENJUALAN */
+
 .btn-primary {
-    background: #8b451f;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    background: var(--brown);
+
     color: white;
-    padding: 13px 20px;
-    box-shadow: 0 5px 14px rgba(139, 69, 31, 0.22);
+
+    padding: 13px 19px;
+
+    box-shadow:
+        0 6px 16px rgba(139, 69, 31, 0.2);
 }
 
 .btn-primary:hover {
-    background: #6f3417;
+    background: var(--brown-dark);
+
+    transform: translateY(-1px);
 }
 
+
+/* BUTTON SECONDARY */
+
 .btn-secondary {
-    background: #f0e5d7;
-    color: #6f3417;
+    background: var(--cream-dark);
+
+    color: var(--brown-dark);
+
     padding: 12px 18px;
+
+    border: 1px solid var(--border);
+
+    align-self: end;
 }
 
 .btn-secondary:hover {
-    background: #e7d6c3;
+    background: var(--brown-soft);
+
+    border-color: #d8c2af;
 }
+
+
+/* SIMPAN */
 
 .btn-save {
     width: 100%;
-    background: #8b451f;
+
+    background: var(--brown);
+
     color: white;
+
     padding: 15px;
+
     margin-top: 20px;
-    box-shadow: 0 5px 14px rgba(139, 69, 31, 0.18);
+
+    font-size: 15px;
+
+    box-shadow:
+        0 6px 16px rgba(139, 69, 31, 0.2);
 }
 
 .btn-save:hover {
-    background: #6f3417;
+    background: var(--brown-dark);
 }
+
+
+/* CLOSE */
 
 .btn-close {
     background: transparent;
-    color: #8b7565;
-    font-size: 22px;
-    padding: 5px 8px;
+
+    color: var(--muted);
+
+    font-size: 25px;
+
+    padding: 5px 9px;
 }
 
 .btn-close:hover {
-    background: #f1e8de;
+    background: var(--cream-dark);
 }
 
-/* ==========================================
+
+/* =========================================================
    DASHBOARD CARDS
-========================================== */
+========================================================= */
 
 .dashboard-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
     gap: 18px;
-    margin-bottom: 28px;
+
+    margin-bottom: 25px;
 }
+
+
+/* CARD */
 
 .card {
     position: relative;
-    background: #ffffff;
-    padding: 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: var(--white);
+
+    padding: 22px;
+
     border-radius: 18px;
-    border: 1px solid #eadfd2;
-    box-shadow: 0 7px 22px rgba(75, 48, 29, 0.07);
+
+    border: 1px solid var(--border);
+
+    box-shadow: var(--shadow);
+
     overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
+
+.card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 30px rgba(74, 48, 30, 0.11);
+}
+
+
+/* GARIS KIRI */
 
 .card::before {
     content: "";
+
     position: absolute;
+
     left: 0;
     top: 0;
-    width: 5px;
-    height: 100%;
-    background: #c97835;
+    bottom: 0;
+
+    width: 4px;
+
+    background: var(--brown);
 }
 
-.card span {
+
+/* ICON */
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--brown-soft);
+
+    border-radius: 14px;
+
+    font-size: 23px;
+}
+
+
+/* CONTENT */
+
+.stat-content {
+    min-width: 0;
+}
+
+.stat-content span {
     display: block;
-    color: #927b69;
-    font-size: 13px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
     font-weight: 600;
-    margin-bottom: 8px;
-}
 
-.card strong {
-    display: block;
-    color: #3b2418;
-    font-size: 28px;
-    font-weight: 800;
-}
-
-/* ==========================================
-   SECTION
-========================================== */
-
-.section {
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 18px;
-    border: 1px solid #eadfd2;
-    margin-bottom: 25px;
-    box-shadow: 0 7px 22px rgba(75, 48, 29, 0.06);
-}
-
-.section-header {
-    margin-bottom: 20px;
-}
-
-.section-header h2 {
-    color: #3b2418;
-    font-size: 21px;
-    font-weight: 800;
     margin-bottom: 4px;
 }
 
-.section-header p {
-    color: #927b69;
-    font-size: 14px;
+.stat-content strong {
+    display: block;
+
+    color: var(--text);
+
+    font-size: 25px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
 }
 
-/* ==========================================
-   FORM TRANSAKSI
-========================================== */
 
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section,
 .transaction-form {
-    background: #ffffff;
+    background: var(--white);
+
     padding: 25px;
+
     border-radius: 18px;
-    border: 1px solid #eadfd2;
+
+    border: 1px solid var(--border);
+
     margin-bottom: 25px;
-    box-shadow: 0 7px 22px rgba(75, 48, 29, 0.06);
+
+    box-shadow: var(--shadow);
 }
+
+
+/* HEADER SECTION */
+
+.section-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+
+/* LABEL KECIL */
+
+.section-label {
+    color: var(--brown);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+    margin-bottom: 4px;
+}
+
+
+/* JUDUL */
+
+.section-header h2,
+.form-header h2 {
+    color: var(--text);
+
+    font-size: 21px;
+
+    font-weight: 800;
+
+    margin-bottom: 3px;
+}
+
+
+/* DESKRIPSI */
+
+.section-header p,
+.form-header p {
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM TRANSAKSI
+========================================================= */
 
 .form-header {
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     gap: 15px;
+
     margin-bottom: 24px;
 }
 
-.form-header h2 {
-    color: #3b2418;
-    font-size: 21px;
-    font-weight: 800;
-}
 
-.form-header p {
-    color: #927b69;
-    font-size: 13px;
-    margin-top: 3px;
-}
-
-/* ==========================================
+/* =========================================================
    FORM
-========================================== */
+========================================================= */
 
 .form-group {
     display: flex;
+
     flex-direction: column;
+
     gap: 7px;
+
     margin-bottom: 18px;
 }
 
 .form-group label {
     color: #5c4435;
-    font-size: 14px;
+
+    font-size: 13px;
+
     font-weight: 700;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
+
     padding: 12px 13px;
-    border: 1px solid #dfd1c2;
+
+    border: 1px solid var(--border);
+
     border-radius: 10px;
+
     background: #fffdfb;
-    color: #3b2a20;
+
+    color: var(--text);
+
     font-family: inherit;
-    font-size: 15px;
+
+    font-size: 14px;
+
     outline: none;
-    transition: border 0.2s, box-shadow 0.2s;
+
+    transition:
+        border 0.2s,
+        box-shadow 0.2s;
 }
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: #c97835;
-    box-shadow: 0 0 0 3px rgba(201, 120, 53, 0.12);
+    border-color: var(--brown);
+
+    box-shadow:
+        0 0 0 3px rgba(139, 69, 31, 0.09);
 }
 
-/* ==========================================
+
+/* =========================================================
    PRODUCT INPUT
-========================================== */
+========================================================= */
 
 .product-input {
     display: grid;
-    grid-template-columns: 1fr 150px auto;
+
+    grid-template-columns:
+        1fr 150px auto;
+
     gap: 14px;
+
     align-items: end;
 }
 
@@ -278,34 +536,55 @@ button:active {
     margin-bottom: 18px;
 }
 
-/* ==========================================
+
+/* =========================================================
    CART
-========================================== */
+========================================================= */
 
 .cart {
     margin-top: 12px;
 }
 
-.cart h3 {
-    color: #4a3022;
+.cart-title {
+    margin-bottom: 12px;
+}
+
+.cart-title h3 {
+    color: var(--text);
+
     font-size: 16px;
-    margin-bottom: 13px;
+
+    margin-bottom: 2px;
+}
+
+.cart-title span {
+    color: var(--muted);
+
+    font-size: 12px;
 }
 
 #cartItems {
-    border: 1px solid #eadfd2;
+    border: 1px solid var(--border);
+
     border-radius: 12px;
+
     overflow: hidden;
+
     background: #fffdfb;
 }
 
 .cart-item {
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     gap: 15px;
-    padding: 15px;
-    border-bottom: 1px solid #eee4d9;
+
+    padding: 14px 15px;
+
+    border-bottom: 1px solid var(--border);
 }
 
 .cart-item:last-child {
@@ -314,193 +593,283 @@ button:active {
 
 .cart-item-info strong {
     display: block;
-    color: #3b2418;
-    margin-bottom: 4px;
+
+    color: var(--text);
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
 }
 
 .cart-item-info span {
-    color: #927b69;
-    font-size: 13px;
+    color: var(--muted);
+
+    font-size: 12px;
 }
 
+
+/* HAPUS PRODUK */
+
 .btn-remove {
-    background: #fbe9e4;
-    color: #b54832;
+    background: #fbeaea;
+
+    color: var(--red);
+
     padding: 7px 10px;
+
+    font-size: 12px;
 }
 
 .btn-remove:hover {
-    background: #f6d9d2;
+    background: #f4dada;
 }
 
 .empty-cart {
     padding: 22px;
+
     text-align: center;
-    color: #a28f80;
+
+    color: var(--muted);
+
+    font-size: 13px;
 }
 
-/* ==========================================
+
+/* =========================================================
    TOTAL
-========================================== */
+========================================================= */
 
 .total-box {
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     gap: 15px;
-    background: #faf3e9;
-    border: 1px solid #ead8c6;
+
+    background: var(--cream);
+
     padding: 18px 20px;
+
     margin-top: 20px;
+
     border-radius: 12px;
+
+    border: 1px solid var(--border);
 }
 
 .total-box span {
     color: #6f5441;
+
+    font-size: 13px;
+
     font-weight: 700;
 }
 
 .total-box strong {
-    color: #8b451f;
-    font-size: 25px;
+    color: var(--brown);
+
+    font-size: 24px;
+
     font-weight: 800;
 }
 
-/* ==========================================
+
+/* =========================================================
    PAYMENT
-========================================== */
+========================================================= */
+
+.payment-group {
+    margin-top: 20px;
+}
+
+.payment-title {
+    color: #5c4435;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    margin-bottom: 9px;
+}
 
 .payment-methods {
     display: flex;
+
     gap: 10px;
+
     flex-wrap: wrap;
 }
 
 .payment-option {
     display: flex;
+
     align-items: center;
-    border: 1px solid #dfd1c2;
+
+    gap: 5px;
+
+    border: 1px solid var(--border);
+
     background: #fffdfb;
+
     color: #5c4435;
+
     padding: 11px 15px;
+
     border-radius: 10px;
+
     cursor: pointer;
-    transition: all 0.2s ease;
+
+    font-size: 13px;
+
+    transition: 0.2s;
 }
 
 .payment-option:hover {
-    border-color: #c97835;
-    background: #fff8f0;
+    border-color: var(--brown);
+
+    background: var(--brown-soft);
 }
 
 .payment-option input {
-    margin-right: 7px;
-    accent-color: #8b451f;
+    margin-right: 3px;
+
+    accent-color: var(--brown);
 }
 
-/* ==========================================
+
+/* =========================================================
    TABLE
-========================================== */
+========================================================= */
 
 .table-container {
     width: 100%;
+
     overflow-x: auto;
+
     -webkit-overflow-scrolling: touch;
+
+    border-radius: 12px;
 }
 
 table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    overflow: hidden;
+
+    border-collapse: collapse;
 }
 
 th,
 td {
     padding: 14px;
+
     text-align: left;
-    border-bottom: 1px solid #eee4d9;
+
+    border-bottom: 1px solid var(--border);
 }
 
 th {
-    background: #faf3e9;
+    background: #f8f3ed;
+
     color: #6f5441;
-    font-size: 13px;
+
+    font-size: 12px;
+
     font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.3px;
 }
 
 td {
-    color: #4a3629;
-    background: #ffffff;
-    font-size: 14px;
+    color: #443c37;
+
+    background: white;
+
+    font-size: 13px;
+}
+
+tbody tr {
+    transition: background 0.15s ease;
 }
 
 tbody tr:hover td {
-    background: #fffaf4;
+    background: #fffaf5;
 }
 
 tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* ==========================================
-   DELETE BUTTON
-========================================== */
+
+/* =========================================================
+   DELETE TRANSACTION
+========================================================= */
 
 table button {
-    background: #fbe9e4;
-    color: #b54832;
+    background: #fbeaea;
+
+    color: var(--red);
+
     padding: 7px 11px;
+
     font-size: 12px;
+
+    border-radius: 8px;
 }
 
 table button:hover {
-    background: #f4d6cf;
+    background: #f4dada;
 }
 
-/* ==========================================
+
+/* =========================================================
    HIDDEN
-========================================== */
+========================================================= */
 
 .hidden {
     display: none !important;
 }
 
-/* ==========================================
+
+/* =========================================================
    SCROLLBAR
-========================================== */
+========================================================= */
 
 ::-webkit-scrollbar {
     width: 8px;
+
     height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1e8de;
+    background: var(--cream-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #c8ad96;
+    background: #d0bdae;
+
     border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #a98a70;
+    background: #b69c88;
 }
 
-/* ==========================================
-   RESPONSIVE
-   DESAIN TETAP SAMA, HANYA MENYESUAIKAN
-========================================== */
+
+/* =========================================================
+   TABLET
+========================================================= */
 
 @media (max-width: 900px) {
 
     .container {
-        padding: 22px 16px 40px;
+        padding: 24px 18px 40px;
     }
 
     .header h1 {
-        font-size: 26px;
+        font-size: 27px;
     }
 
     .dashboard-cards {
@@ -511,63 +880,113 @@ table button:hover {
         padding: 18px;
     }
 
-    .card strong {
-        font-size: 23px;
+    .stat-icon {
+        width: 43px;
+        height: 43px;
+
+        font-size: 20px;
+    }
+
+    .stat-content strong {
+        font-size: 21px;
     }
 
     .section,
     .transaction-form {
         padding: 20px;
     }
-
 }
+
+
+/* =========================================================
+   IPHONE / MOBILE
+========================================================= */
 
 @media (max-width: 650px) {
 
+    .container {
+        padding:
+            18px 14px 35px;
+    }
+
+
+    /* HEADER */
+
     .header {
-        align-items: flex-start;
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 14px;
+
+        margin-bottom: 22px;
     }
 
-    .header h1 {
+    .brand {
+        gap: 10px;
+    }
+
+    .brand-icon {
+        width: 45px;
+        height: 45px;
+
         font-size: 23px;
-    }
 
-    .header p {
-        font-size: 13px;
-    }
-
-    .btn-primary {
-        padding: 11px 14px;
-        font-size: 13px;
-    }
-
-    .dashboard-cards {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-    }
-
-    .card {
-        padding: 14px 11px;
         border-radius: 13px;
     }
 
-    .card::before {
-        width: 3px;
+    .header h1 {
+        font-size: 24px;
     }
 
-    .card span {
-        font-size: 10px;
-        margin-bottom: 5px;
+    .header p {
+        font-size: 12px;
     }
 
-    .card strong {
-        font-size: 16px;
+    .btn-primary {
+        width: 100%;
+
+        padding: 13px;
     }
+
+
+    /* CARDS */
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+
+        margin-bottom: 20px;
+    }
+
+    .card {
+        padding: 17px;
+
+        border-radius: 15px;
+    }
+
+    .stat-icon {
+        width: 42px;
+        height: 42px;
+
+        font-size: 20px;
+    }
+
+    .stat-content strong {
+        font-size: 23px;
+    }
+
+
+    /* SECTION */
 
     .section,
     .transaction-form {
-        padding: 16px;
-        border-radius: 14px;
+        padding: 17px;
+
+        border-radius: 15px;
+
+        margin-bottom: 18px;
     }
 
     .section-header h2,
@@ -575,95 +994,101 @@ table button:hover {
         font-size: 19px;
     }
 
+
+    /* FORM */
+
     .product-input {
-        grid-template-columns: 1fr 100px auto;
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+    .quantity-group {
+        margin-bottom: 18px;
+    }
+
+    .btn-secondary {
+        width: 100%;
+
+        margin-bottom: 18px;
+    }
+
+
+    /* CART */
+
+    .cart-item {
+        padding: 13px;
+    }
+
+
+    /* PAYMENT */
+
+    .payment-methods {
+        flex-direction: column;
+
         gap: 8px;
     }
 
-    .product-input .btn-secondary {
-        padding: 11px 12px;
-    }
-
-    .payment-methods {
-        gap: 7px;
-    }
-
     .payment-option {
-        padding: 9px 11px;
-        font-size: 13px;
+        width: 100%;
+
+        padding: 10px 12px;
     }
+
+
+    /* TOTAL */
 
     .total-box {
-        padding: 14px;
+        padding: 15px;
     }
 
     .total-box strong {
-        font-size: 20px;
+        font-size: 21px;
+    }
+
+
+    /* TABLE */
+
+    table {
+        min-width: 600px;
     }
 
     th,
     td {
-        padding: 11px 9px;
+        padding: 11px 10px;
+
         font-size: 12px;
+
         white-space: nowrap;
     }
-
 }
 
-@media (max-width: 430px) {
+
+/* =========================================================
+   IPHONE KECIL
+========================================================= */
+
+@media (max-width: 390px) {
 
     .container {
-        padding: 16px 12px 30px;
-    }
-
-    .header {
-        gap: 10px;
-        margin-bottom: 20px;
+        padding-left: 11px;
+        padding-right: 11px;
     }
 
     .header h1 {
-        font-size: 21px;
-    }
-
-    .header p {
-        font-size: 12px;
-    }
-
-    .btn-primary {
-        padding: 10px 12px;
-        border-radius: 9px;
-    }
-
-    .dashboard-cards {
-        gap: 6px;
-        margin-bottom: 20px;
+        font-size: 22px;
     }
 
     .card {
-        padding: 12px 8px;
+        padding: 15px;
     }
 
-    .card span {
-        font-size: 9px;
-    }
-
-    .card strong {
-        font-size: 14px;
+    .stat-content strong {
+        font-size: 21px;
     }
 
     .section,
     .transaction-form {
-        padding: 14px;
+        padding: 15px;
     }
-
-    .product-input {
-        grid-template-columns: 1fr 80px auto;
-        gap: 6px;
-    }
-
-    .product-input .btn-secondary {
-        padding: 10px 8px;
-        font-size: 12px;
-    }
-
 }
