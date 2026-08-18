@@ -1337,3 +1337,118 @@ tbody tr:hover td {
 .customer-info textarea:hover {
     border-color: #d5c3b5;
 }
+
+/* =========================================================
+   MODAL PREVIEW STRUK
+========================================================= */
+
+.receipt-modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.receipt-modal.hidden {
+    display: none;
+}
+
+.receipt-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.receipt-dialog {
+    position: relative;
+
+    width: 420px;
+    max-width: 90vw;
+    max-height: 90vh;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.receipt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 20px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.receipt-header h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 18px;
+}
+
+.receipt-header p {
+    margin: 4px 0 0;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.receipt-close {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    border-radius: 8px;
+}
+
+.receipt-close:hover {
+    background: #f5f1ed;
+}
+
+.receipt-content {
+    padding: 20px;
+
+    overflow-y: auto;
+
+    flex: 1;
+}
+
+.receipt-actions {
+    display: flex;
+    gap: 10px;
+
+    padding: 15px 20px;
+
+    border-top: 1px solid var(--border);
+
+    background: #faf8f5;
+}
+
+.receipt-actions button {
+    flex: 1;
+}
