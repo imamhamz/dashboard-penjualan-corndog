@@ -2,7 +2,6 @@
 <html lang="id">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -10,32 +9,25 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="theme-color"
-        content="#8b451f"
-    >
-
-    <title>SheCorndog - POS</title>
+    <title>SheCorndog - Point of Sale</title>
 
     <link
         rel="stylesheet"
-        href="style.css?v=6"
+        href="style.css?v=7"
     >
-
 </head>
 
 
 <body>
 
+<div class="pos-app">
 
-<div class="container">
 
-
-    <!-- =========================================
+    <!-- =====================================================
          HEADER
-    ========================================== -->
+    ====================================================== -->
 
-    <header class="header">
+    <header class="pos-header">
 
         <div class="brand">
 
@@ -58,471 +50,482 @@
         </div>
 
 
-        <button
-            id="btnTambahTransaksi"
-            class="btn-primary"
-            type="button"
-        >
-            <span>＋</span>
-            Tambah Penjualan
-        </button>
+        <div class="header-info">
+
+            <div class="connection-status">
+                <span class="status-dot"></span>
+                Online
+            </div>
+
+            <div
+                id="currentTime"
+                class="current-time"
+            >
+                --:--
+            </div>
+
+        </div>
 
     </header>
 
 
 
-    <!-- =========================================
-         DASHBOARD
-    ========================================== -->
+    <!-- =====================================================
+         POS MAIN
+    ====================================================== -->
 
-    <section class="dashboard-cards">
+    <main class="pos-layout">
 
 
-        <!-- TOTAL PRODUK -->
+        <!-- =================================================
+             KATALOG PRODUK
+        ================================================== -->
 
-        <div class="card stat-card">
+        <section class="product-panel">
 
-            <div class="stat-icon">
-                🌭
-            </div>
 
-            <div class="stat-content">
-
-                <span>
-                    Total Produk
-                </span>
-
-                <strong id="totalProduk">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- TOTAL TRANSAKSI -->
-
-        <div class="card stat-card">
-
-            <div class="stat-icon">
-                🧾
-            </div>
-
-            <div class="stat-content">
-
-                <span>
-                    Total Transaksi
-                </span>
-
-                <strong id="totalTransaksi">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- TOTAL PENJUALAN -->
-
-        <div class="card stat-card">
-
-            <div class="stat-icon">
-                💰
-            </div>
-
-            <div class="stat-content">
-
-                <span>
-                    Total Penjualan
-                </span>
-
-                <strong id="totalPenjualan">
-                    Rp 0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =========================================
-         FORM TRANSAKSI
-    ========================================== -->
-
-    <section
-        id="formTransaksi"
-        class="transaction-form hidden"
-    >
-
-
-        <div class="form-header">
-
-
-            <div>
-
-                <div class="section-label">
-                    TRANSAKSI
-                </div>
-
-                <h2>
-                    Penjualan Baru
-                </h2>
-
-                <p>
-                    Catat pesanan pelanggan
-                </p>
-
-            </div>
-
-
-            <button
-                id="btnTutupForm"
-                class="btn-close"
-                type="button"
-                aria-label="Tutup"
-            >
-                ×
-            </button>
-
-
-        </div>
-
-
-
-        <!-- TANGGAL -->
-
-        <div class="form-group">
-
-            <label for="saleDate">
-                Tanggal Penjualan
-            </label>
-
-            <input
-                type="date"
-                id="saleDate"
-            >
-
-        </div>
-
-
-
-        <!-- PRODUK -->
-
-        <div class="product-input">
-
-
-            <div class="form-group">
-
-                <label for="productSelect">
-                    Pilih Produk
-                </label>
-
-                <select id="productSelect">
-
-                    <option value="">
-                        Pilih produk...
-                    </option>
-
-                </select>
-
-            </div>
-
-
-
-            <div class="form-group quantity-group">
-
-                <label for="quantity">
-                    Jumlah
-                </label>
-
-                <input
-                    type="number"
-                    id="quantity"
-                    min="1"
-                    value="1"
-                >
-
-            </div>
-
-
-
-            <button
-                id="btnTambahProduk"
-                class="btn-secondary"
-                type="button"
-            >
-                ＋ Tambah
-            </button>
-
-
-        </div>
-
-
-
-        <!-- CART -->
-
-        <div class="cart">
-
-            <div class="cart-title">
+            <div class="panel-header">
 
                 <div>
 
-                    <h3>
+                    <span class="section-label">
+                        MENU
+                    </span>
+
+                    <h2>
+                        Pilih Produk
+                    </h2>
+
+                    <p>
+                        Pilih produk untuk dimasukkan ke pesanan
+                    </p>
+
+                </div>
+
+
+                <!-- SEARCH -->
+
+                <div class="product-search">
+
+                    <span>
+                        🔍
+                    </span>
+
+                    <input
+                        type="text"
+                        id="productSearch"
+                        placeholder="Cari produk..."
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 KATEGORI
+            ================================================== -->
+
+            <div class="category-tabs">
+
+                <button
+                    type="button"
+                    class="category-tab active"
+                    data-category="all"
+                >
+                    Semua
+                </button>
+
+                <button
+                    type="button"
+                    class="category-tab"
+                    data-category="Corndog"
+                >
+                    Corndog
+                </button>
+
+                <button
+                    type="button"
+                    class="category-tab"
+                    data-category="Minuman"
+                >
+                    Minuman
+                </button>
+
+                <button
+                    type="button"
+                    class="category-tab"
+                    data-category="Paket"
+                >
+                    Paket
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PRODUCT GRID
+            ================================================== -->
+
+            <div
+                id="productGrid"
+                class="product-grid"
+            >
+
+                <!-- Produk akan dimuat oleh JavaScript -->
+
+                <div class="product-loading">
+                    Memuat produk...
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 TABEL PRODUK LAMA
+                 DIPERTAHANKAN UNTUK KOMPATIBILITAS JS
+            ================================================== -->
+
+            <div
+                class="legacy-product-table hidden"
+            >
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Produk
+                            </th>
+
+                            <th>
+                                Kategori
+                            </th>
+
+                            <th>
+                                Harga
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="productTable">
+
+                        <tr>
+
+                            <td colspan="4">
+                                Memuat produk...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             KERANJANG
+        ================================================== -->
+
+        <aside class="cart-panel">
+
+
+            <!-- CART HEADER -->
+
+            <div class="cart-header">
+
+                <div>
+
+                    <span class="section-label">
+                        ORDER
+                    </span>
+
+                    <h2>
                         Pesanan
-                    </h3>
+                    </h2>
 
-                    <span>
-                        Daftar produk yang dibeli
-                    </span>
+                </div>
 
+
+                <div
+                    id="cartCount"
+                    class="cart-count"
+                >
+                    0 item
                 </div>
 
             </div>
 
 
-            <div id="cartItems">
 
-                <p class="empty-cart">
-                    Belum ada produk
-                </p>
+            <!-- =================================================
+                 TRANSACTION FORM
+            ================================================== -->
 
-            </div>
-
-        </div>
-
-
-
-        <!-- TOTAL -->
-
-        <div class="total-box">
-
-            <div>
-
-                <span>
-                    Total Pembayaran
-                </span>
-
-            </div>
+            <div
+                id="formTransaksi"
+                class="transaction-form"
+            >
 
 
-            <strong id="transactionTotal">
-                Rp 0
-            </strong>
+                <!-- TANGGAL -->
 
-        </div>
+                <div class="form-group date-group">
 
-
-
-        <!-- PEMBAYARAN -->
-
-        <div class="form-group payment-group">
-
-            <div class="payment-title">
-                Metode Pembayaran
-            </div>
-
-
-            <div class="payment-methods">
-
-
-                <label class="payment-option">
+                    <label for="saleDate">
+                        Tanggal
+                    </label>
 
                     <input
-                        type="radio"
-                        name="payment"
-                        value="Cash"
+                        type="date"
+                        id="saleDate"
                     >
 
-                    <span>
-                        💵 Cash
-                    </span>
-
-                </label>
-
-
-
-                <label class="payment-option">
-
-                    <input
-                        type="radio"
-                        name="payment"
-                        value="Transfer"
-                    >
-
-                    <span>
-                        🏦 Transfer
-                    </span>
-
-                </label>
-
-
-
-                <label class="payment-option">
-
-                    <input
-                        type="radio"
-                        name="payment"
-                        value="QRIS"
-                    >
-
-                    <span>
-                        📱 QRIS
-                    </span>
-
-                </label>
-
-
-            </div>
-
-        </div>
-
-
-
-        <!-- SIMPAN -->
-
-        <button
-            id="btnSimpanTransaksi"
-            class="btn-save"
-            type="button"
-        >
-            Simpan Transaksi
-        </button>
-
-
-    </section>
-
-
-
-    <!-- =========================================
-         PRODUK
-    ========================================== -->
-
-    <section class="section">
-
-
-        <div class="section-header">
-
-
-            <div>
-
-                <div class="section-label">
-                    MENU
                 </div>
 
-                <h2>
-                    Daftar Produk
-                </h2>
-
-                <p>
-                    Menu corndog yang tersedia
-                </p>
-
-            </div>
 
 
-        </div>
+                <!-- =============================================
+                     PRODUCT SELECT
+                ============================================== -->
 
+                <div class="legacy-product-input hidden">
 
+                    <div class="form-group">
 
-        <div class="table-container">
-
-
-            <table>
-
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            ID
-                        </th>
-
-                        <th>
+                        <label for="productSelect">
                             Produk
-                        </th>
+                        </label>
 
-                        <th>
-                            Kategori
-                        </th>
+                        <select id="productSelect">
 
-                        <th>
-                            Harga
-                        </th>
+                            <option value="">
+                                Pilih produk
+                            </option>
 
-                    </tr>
+                        </select>
 
-                </thead>
+                    </div>
 
 
+                    <div class="form-group quantity-group">
 
-                <tbody id="productTable">
+                        <label for="quantity">
+                            Jumlah
+                        </label>
 
-                    <tr>
+                        <input
+                            type="number"
+                            id="quantity"
+                            min="1"
+                            value="1"
+                        >
 
-                        <td colspan="4">
-                            Memuat produk...
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-
-            </table>
-
-
-        </div>
+                    </div>
 
 
-    </section>
+                    <button
+                        id="btnTambahProduk"
+                        class="btn-secondary"
+                        type="button"
+                    >
+                        + Tambah
+                    </button>
+
+                </div>
 
 
 
-    <!-- =========================================
+                <!-- =============================================
+                     CART ITEMS
+                ============================================== -->
+
+                <div class="cart">
+
+                    <div class="cart-title">
+
+                        <h3>
+                            Daftar Pesanan
+                        </h3>
+
+                    </div>
+
+
+                    <div id="cartItems">
+
+                        <p class="empty-cart">
+                            Belum ada produk
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     TOTAL
+                ============================================== -->
+
+                <div class="total-box">
+
+                    <div>
+
+                        <span>
+                            Total Pembayaran
+                        </span>
+
+                    </div>
+
+
+                    <strong id="transactionTotal">
+                        Rp 0
+                    </strong>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     PAYMENT
+                ============================================== -->
+
+                <div class="payment-group">
+
+                    <div class="payment-title">
+                        Metode Pembayaran
+                    </div>
+
+
+                    <div class="payment-methods">
+
+
+                        <label class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="payment"
+                                value="Cash"
+                                checked
+                            >
+
+                            <span>
+                                💵 Cash
+                            </span>
+
+                        </label>
+
+
+
+                        <label class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="payment"
+                                value="Transfer"
+                            >
+
+                            <span>
+                                🏦 Transfer
+                            </span>
+
+                        </label>
+
+
+
+                        <label class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="payment"
+                                value="QRIS"
+                            >
+
+                            <span>
+                                📱 QRIS
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     SAVE / PAY
+                ============================================== -->
+
+                <button
+                    id="btnSimpanTransaksi"
+                    class="btn-pay"
+                    type="button"
+                >
+
+                    <span>
+                        💳
+                    </span>
+
+                    BAYAR / PROSES PEMBAYARAN
+
+                </button>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+
+
+    <!-- =====================================================
          RIWAYAT TRANSAKSI
-    ========================================== -->
+    ====================================================== -->
 
-    <section class="section">
+    <section class="history-section">
 
 
         <div class="section-header">
 
-
             <div>
 
-                <div class="section-label">
+                <span class="section-label">
                     HISTORY
-                </div>
+                </span>
 
                 <h2>
                     Riwayat Transaksi
                 </h2>
 
                 <p>
-                    Penjualan terbaru
+                    Daftar penjualan terbaru
                 </p>
 
             </div>
 
-
         </div>
-
 
 
         <div class="table-container">
 
-
             <table>
-
 
                 <thead>
 
@@ -544,17 +547,20 @@
                             Total
                         </th>
 
+                        <th>
+                            Aksi
+                        </th>
+
                     </tr>
 
                 </thead>
-
 
 
                 <tbody id="salesTable">
 
                     <tr>
 
-                        <td colspan="4">
+                        <td colspan="5">
                             Belum ada transaksi
                         </td>
 
@@ -562,27 +568,71 @@
 
                 </tbody>
 
-
             </table>
-
 
         </div>
 
-
     </section>
+
 
 
 </div>
 
 
 
-<!-- =========================================
+<!-- =========================================================
      SUPABASE
-========================================== -->
+========================================================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<!-- =========================================================
+     SCRIPT
+========================================================= -->
 
 <script src="script.js"></script>
+
+
+<!-- =========================================================
+     JAM REAL-TIME
+========================================================= -->
+
+<script>
+
+function updateClock() {
+
+    const clock =
+        document.getElementById("currentTime");
+
+    if (!clock) return;
+
+    const now = new Date();
+
+    const time =
+        now.toLocaleTimeString(
+            "id-ID",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    clock.textContent = time;
+
+}
+
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+</script>
 
 
 </body>
