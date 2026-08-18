@@ -757,10 +757,6 @@ table button:hover {
         padding: 11px 13px;
         font-size: 14px;
     }
-
-}
-@media (max-width: 768px) {
-    body {
-        background: red !important;
-    }
+   body {
+    background: red !important;
 }
