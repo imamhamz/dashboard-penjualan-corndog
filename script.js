@@ -742,6 +742,10 @@ function updateTransactionTotal() {
 
 async function saveTransaction() {
 
+    // ==================================
+    // CEK PRODUK
+    // ==================================
+
     if (cart.length === 0) {
 
         alert(
@@ -753,11 +757,54 @@ async function saveTransaction() {
     }
 
 
+    // ==================================
+    // TANGGAL
+    // ==================================
+
     const saleDate =
         document.getElementById(
             "saleDate"
         ).value;
 
+
+    // ==================================
+    // IDENTITAS PEMBELI
+    // ==================================
+
+    const customerName =
+        document.getElementById(
+            "customerName"
+        ).value.trim();
+
+
+    const customerNote =
+        document.getElementById(
+            "customerNote"
+        ).value.trim();
+
+
+    // NAMA WAJIB DIISI
+
+    if (!customerName) {
+
+        alert(
+            "Nama pembeli wajib diisi."
+        );
+
+        document
+            .getElementById(
+                "customerName"
+            )
+            .focus();
+
+        return;
+
+    }
+
+
+    // ==================================
+    // METODE PEMBAYARAN
+    // ==================================
 
     const payment =
         document.querySelector(
@@ -776,6 +823,10 @@ async function saveTransaction() {
     }
 
 
+    // ==================================
+    // HITUNG TOTAL
+    // ==================================
+
     const totalAmount =
         calculateTotal();
 
@@ -793,7 +844,14 @@ async function saveTransaction() {
             .from("sales")
             .insert({
 
-                sale_date: saleDate,
+                sale_date:
+                    saleDate,
+
+                customer_name:
+                    customerName,
+
+                customer_note:
+                    customerNote,
 
                 payment_method:
                     payment.value,
@@ -822,7 +880,8 @@ async function saveTransaction() {
 
                 return {
 
-                    sale_id: sale.id,
+                    sale_id:
+                        sale.id,
 
                     product_id:
                         item.product_id,
@@ -865,18 +924,43 @@ async function saveTransaction() {
         );
 
 
+        // Kosongkan keranjang
+
         cart = [];
 
         renderCart();
 
-        document.querySelectorAll(
-            'input[name="payment"]'
-        ).forEach(function (radio) {
 
-            radio.checked = false;
+        // Reset pembayaran
 
-        });
+        document
+            .querySelectorAll(
+                'input[name="payment"]'
+            )
+            .forEach(function (radio) {
 
+                radio.checked = false;
+
+            });
+
+
+        // Reset identitas pembeli
+
+        document
+            .getElementById(
+                "customerName"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "customerNote"
+            )
+            .value = "";
+
+
+        // Tutup form transaksi
 
         document
             .getElementById(
@@ -886,6 +970,8 @@ async function saveTransaction() {
                 "hidden"
             );
 
+
+        // Refresh dashboard & riwayat
 
         await loadDashboard();
 
