@@ -1018,12 +1018,18 @@ async function saveTransaction() {
 
 
         // ==================================
-        // BERHASIL
-        // ==================================
+// TAMPILKAN STRUK
+// ==================================
 
-        alert(
-            "Transaksi berhasil disimpan!"
-        );
+showReceipt({
+    sale: sale,
+    cart: cart,
+    customerName: customerName,
+    customerNote: customerNote,
+    paymentMethod: payment.value,
+    saleDate: saleDate,
+    totalAmount: totalAmount
+});
 
 
         // Kosongkan keranjang
@@ -1493,5 +1499,315 @@ async function deleteTransaction(id) {
         );
 
     }
+
+}
+
+// =========================================================
+// TAMPILKAN STRUK TRANSAKSI
+// =========================================================
+
+function showReceipt(data) {
+
+    const modal =
+        document.getElementById(
+            "receiptModal"
+        );
+
+    const content =
+        document.getElementById(
+            "receiptContent"
+        );
+
+
+    if (!modal || !content) {
+
+        console.error(
+            "Elemen struk tidak ditemukan."
+        );
+
+        return;
+
+    }
+
+
+    // ==================================
+    // BUAT DAFTAR PRODUK
+    // ==================================
+
+    let itemsHTML = "";
+
+
+    data.cart.forEach(function (item) {
+
+        const subtotal =
+            Number(item.quantity) *
+            Number(item.unit_price);
+
+
+        itemsHTML += `
+            <div class="receipt-item">
+
+                <div class="receipt-item-name">
+                    ${escapeReceiptHTML(item.name)}
+                </div>
+
+                <div class="receipt-item-detail">
+
+                    <span>
+                        ${item.quantity} ×
+                        ${formatRupiah(item.unit_price)}
+                    </span>
+
+                    <strong>
+                        ${formatRupiah(subtotal)}
+                    </strong>
+
+                </div>
+
+            </div>
+        `;
+
+    });
+
+
+    // ==================================
+    // ISI STRUK
+    // ==================================
+
+    content.innerHTML = `
+
+        <div class="receipt-paper">
+
+            <div class="receipt-store">
+
+                <h1>SheCorndog</h1>
+
+                <p>Point of Sale</p>
+
+            </div>
+
+
+            <div class="receipt-line"></div>
+
+
+            <div class="receipt-info">
+
+                <div>
+                    <span>No. Transaksi</span>
+                    <strong>#${data.sale.id}</strong>
+                </div>
+
+                <div>
+                    <span>Tanggal</span>
+                    <strong>${escapeReceiptHTML(data.saleDate)}</strong>
+                </div>
+
+            </div>
+
+
+            <div class="receipt-line"></div>
+
+
+            <div class="receipt-customer">
+
+                <div>
+                    <span>Nama Pembeli</span>
+
+                    <strong>
+                        ${escapeReceiptHTML(
+                            data.customerName
+                        )}
+                    </strong>
+                </div>
+
+
+                ${
+                    data.customerNote
+                        ? `
+                            <div>
+                                <span>Catatan</span>
+
+                                <strong>
+                                    ${escapeReceiptHTML(
+                                        data.customerNote
+                                    )}
+                                </strong>
+                            </div>
+                        `
+                        : ""
+                }
+
+            </div>
+
+
+            <div class="receipt-line"></div>
+
+
+            <div class="receipt-items">
+
+                ${itemsHTML}
+
+            </div>
+
+
+            <div class="receipt-line"></div>
+
+
+            <div class="receipt-total">
+
+                <span>TOTAL</span>
+
+                <strong>
+                    ${formatRupiah(data.totalAmount)}
+                </strong>
+
+            </div>
+
+
+            <div class="receipt-payment">
+
+                Pembayaran:
+                <strong>
+                    ${escapeReceiptHTML(
+                        data.paymentMethod
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="receipt-thanks">
+
+                Terima kasih sudah berbelanja ❤️
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    // ==================================
+    // BUKA MODAL
+    // ==================================
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+
+    // ==================================
+    // TOMBOL TUTUP
+    // ==================================
+
+    const closeTop =
+        document.getElementById(
+            "btnCloseReceipt"
+        );
+
+    const closeBottom =
+        document.getElementById(
+            "btnCloseReceiptBottom"
+        );
+
+
+    if (closeTop) {
+
+        closeTop.onclick =
+            function () {
+
+                closeReceipt();
+
+            };
+
+    }
+
+
+    if (closeBottom) {
+
+        closeBottom.onclick =
+            function () {
+
+                closeReceipt();
+
+            };
+
+    }
+
+
+    // ==================================
+    // TOMBOL CETAK
+    // ==================================
+
+    const printButton =
+        document.getElementById(
+            "btnPrintReceipt"
+        );
+
+
+    if (printButton) {
+
+        printButton.onclick =
+            function () {
+
+                window.print();
+
+            };
+
+    }
+
+}
+
+
+// =========================================================
+// TUTUP STRUK
+// =========================================================
+
+function closeReceipt() {
+
+    const modal =
+        document.getElementById(
+            "receiptModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// AMANKAN TEKS STRUK
+// =========================================================
+
+function escapeReceiptHTML(value) {
+
+    return String(value || "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
