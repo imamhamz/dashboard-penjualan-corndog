@@ -1041,7 +1041,9 @@ async function loadDashboard() {
 
     try {
 
+        // ==================================
         // TOTAL PRODUK
+        // ==================================
 
         const {
             count: totalProduk,
@@ -1061,7 +1063,9 @@ async function loadDashboard() {
         }
 
 
+        // ==================================
         // TOTAL TRANSAKSI
+        // ==================================
 
         const {
             count: totalTransaksi,
@@ -1081,7 +1085,9 @@ async function loadDashboard() {
         }
 
 
+        // ==================================
         // TOTAL PENJUALAN
+        // ==================================
 
         const {
             data: salesData,
@@ -1101,7 +1107,7 @@ async function loadDashboard() {
         let totalPenjualan = 0;
 
 
-        salesData.forEach(
+        (salesData || []).forEach(
             function (sale) {
 
                 totalPenjualan +=
@@ -1113,26 +1119,52 @@ async function loadDashboard() {
         );
 
 
-        // TAMPILKAN
+        // ==================================
+        // TAMPILKAN JIKA ELEMEN ADA
+        // ==================================
 
-        document.getElementById(
-            "totalProduk"
-        ).textContent =
-            totalProduk || 0;
-
-
-        document.getElementById(
-            "totalTransaksi"
-        ).textContent =
-            totalTransaksi || 0;
-
-
-        document.getElementById(
-            "totalPenjualan"
-        ).textContent =
-            formatRupiah(
-                totalPenjualan
+        const totalProdukElement =
+            document.getElementById(
+                "totalProduk"
             );
+
+
+        if (totalProdukElement) {
+
+            totalProdukElement.textContent =
+                totalProduk || 0;
+
+        }
+
+
+        const totalTransaksiElement =
+            document.getElementById(
+                "totalTransaksi"
+            );
+
+
+        if (totalTransaksiElement) {
+
+            totalTransaksiElement.textContent =
+                totalTransaksi || 0;
+
+        }
+
+
+        const totalPenjualanElement =
+            document.getElementById(
+                "totalPenjualan"
+            );
+
+
+        if (totalPenjualanElement) {
+
+            totalPenjualanElement.textContent =
+                formatRupiah(
+                    totalPenjualan
+                );
+
+        }
 
 
     }
