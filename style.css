@@ -1452,3 +1452,105 @@ tbody tr:hover td {
 .receipt-actions button {
     flex: 1;
 }
+
+/* =========================================================
+   PRINT STRUK
+========================================================= */
+
+@media print {
+
+    /* Sembunyikan seluruh halaman POS */
+    body * {
+        visibility: hidden !important;
+    }
+
+
+    /* Tampilkan modal struk */
+    #receiptModal,
+    #receiptModal * {
+        visibility: visible !important;
+    }
+
+
+    /* Hilangkan background overlay */
+    .receipt-overlay {
+        display: none !important;
+    }
+
+
+    /* Modal menjadi area cetak */
+    #receiptModal {
+        position: static !important;
+
+        display: block !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        background: white !important;
+    }
+
+
+    /* Dialog tanpa kotak */
+    .receipt-dialog {
+        position: static !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        max-height: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border: none !important;
+        border-radius: 0 !important;
+
+        box-shadow: none !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* Header preview jangan ikut tercetak */
+    .receipt-header {
+        display: none !important;
+    }
+
+
+    /* Isi struk */
+    .receipt-content {
+        padding: 0 !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* Tombol jangan dicetak */
+    .receipt-actions {
+        display: none !important;
+    }
+
+
+    /* Kertas struk */
+    .receipt-paper {
+        width: 72mm;
+
+        margin: 0 auto;
+
+        padding: 4mm;
+
+        box-sizing: border-box;
+
+        background: white;
+
+        color: #000;
+    }
+
+
+    /* Hilangkan shadow */
+    .receipt-paper,
+    .receipt-dialog {
+        box-shadow: none !important;
+    }
+}
