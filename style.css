@@ -1554,3 +1554,126 @@ tbody tr:hover td {
         box-shadow: none !important;
     }
 }
+
+/* =========================================================
+   TAMPILAN STRUK
+========================================================= */
+
+.receipt-paper {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #222;
+}
+
+.receipt-store {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.receipt-store h1 {
+    margin: 0;
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.receipt-store p {
+    margin: 2px 0 0;
+
+    font-size: 10px;
+    color: #666;
+}
+
+.receipt-line {
+    border-top: 1px dashed #999;
+
+    margin: 9px 0;
+}
+
+.receipt-info > div,
+.receipt-customer > div {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 4px;
+}
+
+.receipt-info span,
+.receipt-customer span {
+    color: #666;
+}
+
+.receipt-info strong,
+.receipt-customer strong {
+    text-align: right;
+
+    font-weight: 600;
+}
+
+.receipt-item {
+    margin-bottom: 8px;
+}
+
+.receipt-item-name {
+    font-weight: 700;
+
+    margin-bottom: 2px;
+}
+
+.receipt-item-detail {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    font-size: 11px;
+}
+
+.receipt-item-detail span {
+    color: #555;
+}
+
+.receipt-item-detail strong {
+    font-weight: 700;
+}
+
+.receipt-total {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    margin: 5px 0;
+}
+
+.receipt-payment {
+    text-align: right;
+
+    font-size: 11px;
+
+    margin-top: 5px;
+}
+
+.receipt-thanks {
+    text-align: center;
+
+    margin-top: 15px;
+
+    padding-top: 10px;
+
+    border-top: 1px dashed #999;
+
+    font-size: 10px;
+
+    color: #666;
+}
