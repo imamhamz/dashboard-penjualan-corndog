@@ -28,6 +28,47 @@ let activeCategory = "all";
 let searchKeyword = "";
 
 // ==========================================
+// FORMAT RUPIAH
+// ==========================================
+
+function formatRupiah(value) {
+
+    return "Rp " +
+        Number(value || 0)
+            .toLocaleString("id-ID");
+
+}
+
+
+// ==========================================
+// FORMAT TANGGAL
+// ==========================================
+
+function formatDate(dateString) {
+
+    if (!dateString) {
+        return "-";
+    }
+
+    const date =
+        new Date(dateString);
+
+    if (isNaN(date.getTime())) {
+        return dateString;
+    }
+
+    return date.toLocaleDateString(
+        "id-ID",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
+
+}
+
+// ==========================================
 // SAAT HALAMAN SELESAI DIMUAT
 // ==========================================
 
