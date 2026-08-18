@@ -658,8 +658,22 @@ function renderCart() {
             "cartItems"
         );
 
+    const orderCount =
+    document.getElementById(
+        "orderCount"
+    );
 
     if (!cartContainer) return;
+
+    if (orderCount) {
+    const totalItems =
+        cart.reduce(function (total, item) {
+            return total + Number(item.quantity);
+        }, 0);
+
+    orderCount.textContent =
+        totalItems + " item";
+}
 
 
     if (cart.length === 0) {
