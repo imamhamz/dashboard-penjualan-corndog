@@ -760,3 +760,7 @@ table button:hover {
    body {
     background: red !important;
 }
+
+html {
+   background: red !important;\
+}
