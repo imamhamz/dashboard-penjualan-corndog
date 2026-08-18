@@ -202,102 +202,150 @@ async function loadProducts() {
 
 }
 
-
 // ==========================================
-// TAMPILKAN PRODUK DI TABEL
+// TAMPILKAN PRODUK DI KATALOG POS
 // ==========================================
 
 function displayProducts() {
 
-    const table =
-        document.getElementById(
-            "productTable"
-        );
+    const grid =
+        document.getElementById("productGrid");
 
-    if (!table) return;
-
+    if (!grid) return;
 
     if (products.length === 0) {
 
-        table.innerHTML = `
-            <tr>
-                <td colspan="4">
-                    Belum ada produk
-                </td>
-            </tr>
+        grid.innerHTML = `
+            <div class="product-loading">
+                Belum ada produk
+            </div>
         `;
+
+        return;
+    }
+
+    grid.innerHTML = products.map(function(product) {
+
+        return `
+            <button
+                type="button"
+                class="product-card"
+                data-product-id="${product.id}"
+            >
+
+                <div class="product-image">
+                    🌭
+                </div>
+
+                <div class="product-card-body">
+
+                    <div class="product-category">
+                        ${product.category || "Menu"}
+                    </div>
+
+                    <div class="product-name">
+                        ${product.name}
+                    </div>
+
+                    <div class="product-card-footer">
+
+                        <strong>
+                            ${formatRupiah(product.price)}
+                        </strong>
+
+                        <span class="product-add">
+                            +
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </button>
+        `;
+
+    }).join("");
+
+
+    // ==========================================
+    // KLIK PRODUK
+    // ==========================================
+
+    grid.querySelectorAll(".product-card")
+        .forEach(function(card) {
+
+            card.addEventListener(
+                "click",
+                function() {
+
+                    const productId =
+                        Number(
+                            card.dataset.productId
+                        );
+
+                    addProductDirect(productId);
+
+                }
+            );
+
+        });
+
+}
+
+
+
+// ==========================================
+// TAMBAH PRODUK LANGSUNG DARI KATALOG POS
+// ==========================================
+
+function addProductDirect(productId) {
+
+    const product =
+        products.find(function (item) {
+
+            return Number(item.id) === Number(productId);
+
+        });
+
+    if (!product) {
+
+        alert("Produk tidak ditemukan.");
 
         return;
 
     }
 
 
-    table.innerHTML =
-        products.map(function (product) {
+    const existing =
+        cart.find(function (item) {
 
-            return `
-                <tr>
+            return Number(item.product_id) === Number(productId);
 
-                    <td>
-                        ${product.id}
-                    </td>
-
-                    <td>
-                        ${product.name}
-                    </td>
-
-                    <td>
-                        ${product.category || "-"}
-                    </td>
-
-                    <td>
-                        ${formatRupiah(product.price)}
-                    </td>
-
-                </tr>
-            `;
-
-        }).join("");
-
-}
+        });
 
 
-// ==========================================
-// DROPDOWN PRODUK
-// ==========================================
+    if (existing) {
 
-function populateProductSelect() {
+        existing.quantity += 1;
 
-    const select =
-        document.getElementById(
-            "productSelect"
-        );
+    } else {
 
-    if (!select) return;
+        cart.push({
+
+            product_id: product.id,
+
+            name: product.name,
+
+            quantity: 1,
+
+            unit_price: Number(product.price)
+
+        });
+
+    }
 
 
-    select.innerHTML = `
-        <option value="">
-            Pilih produk
-        </option>
-    `;
-
-
-    products.forEach(function (product) {
-
-        const option =
-            document.createElement(
-                "option"
-            );
-
-        option.value = product.id;
-
-        option.textContent =
-            `${product.name} - ${formatRupiah(product.price)}`;
-
-        select.appendChild(option);
-
-    });
+    renderCart();
 
 }
 
