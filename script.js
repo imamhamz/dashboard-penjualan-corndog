@@ -1124,81 +1124,140 @@ async function loadSales() {
 
     if (!table) return;
 
+
     try {
 
         const {
             data,
             error
         } = await supabaseClient
+
             .from("sales")
+
             .select(
-                "id, sale_date, payment_method, total_amount"
+                "id, sale_date, customer_name, customer_note, payment_method, total_amount"
             )
+
             .order(
                 "id",
                 {
                     ascending: false
                 }
             )
+
             .limit(20);
-        
-        console.log("DATA SALES:", data);
-        console.log("ERROR SALES:", error);
-        
+
+
+        console.log(
+            "DATA SALES:",
+            data
+        );
+
+        console.log(
+            "ERROR SALES:",
+            error
+        );
+
+
         if (error) {
+
             throw error;
+
         }
 
-        if (!data || data.length === 0) {
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
 
             table.innerHTML = `
                 <tr>
-                    <td colspan="5">
+
+                    <td colspan="6">
                         Belum ada transaksi
                     </td>
+
                 </tr>
             `;
 
             return;
+
         }
 
+
         table.innerHTML =
-            data.map(function (sale) {
 
-                return `
-                    <tr>
+            data.map(
+                function (sale) {
 
-                        <td>
-                            ${sale.id}
-                        </td>
+                    return `
+                        <tr>
 
-                        <td>
-                            ${formatDate(
-                                sale.sale_date
-                            )}
-                        </td>
+                            <td>
+                                ${sale.id}
+                            </td>
 
-                        <td>
-                            ${sale.payment_method}
-                        </td>
 
-                        <td>
-                            ${formatRupiah(
-                                sale.total_amount
-                            )}
-                        </td>
+                            <td>
+                                ${formatDate(
+                                    sale.sale_date
+                                )}
+                            </td>
 
-                        <td>
-                            <button
-                                onclick="deleteTransaction(${sale.id})">
-                                Hapus
-                            </button>
-                        </td>
 
-                    </tr>
-                `;
+                            <td>
 
-            }).join("");
+                                <div class="customer-history">
+
+                                    <strong>
+                                        ${sale.customer_name || "-"}
+                                    </strong>
+
+                                    ${
+                                        sale.customer_note
+                                            ? `
+                                                <span>
+                                                    ${sale.customer_note}
+                                                </span>
+                                              `
+                                            : ""
+                                    }
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+                                ${sale.payment_method}
+                            </td>
+
+
+                            <td>
+                                ${formatRupiah(
+                                    sale.total_amount
+                                )}
+                            </td>
+
+
+                            <td>
+
+                                <button
+                                    class="btn-history-delete"
+                                    onclick="deleteTransaction(${sale.id})"
+                                >
+                                    Hapus
+                                </button>
+
+                            </td>
+
+                        </tr>
+                    `;
+
+                }
+            ).join("");
+
 
     }
 
@@ -1211,105 +1270,4 @@ async function loadSales() {
 
     }
 
-}
-
-// ==========================================
-// TOTAL PRODUK
-// ==========================================
-
-function updateTotalProduk() {
-
-    const element =
-        document.getElementById(
-            "totalProduk"
-        );
-
-    if (element) {
-
-        element.textContent =
-            products.length;
-
-    }
-
-}
-
-
-// ==========================================
-// FORMAT RUPIAH
-// ==========================================
-
-function formatRupiah(value) {
-
-    return "Rp " +
-        Number(value || 0)
-            .toLocaleString("id-ID");
-
-}
-
-
-// ==========================================
-// FORMAT TANGGAL
-// ==========================================
-
-function formatDate(date) {
-
-    if (!date) return "-";
-
-    const parts =
-        date.split("-");
-
-    if (parts.length !== 3) {
-        return date;
-    }
-
-    return `${parts[2]}-${parts[1]}-${parts[0]}`;
-
-}
-async function deleteTransaction(saleId) {
-
-    const yakin = confirm(
-        "Yakin ingin menghapus transaksi ini?"
-    );
-
-    if (!yakin) {
-        return;
-    }
-
-    try {
-
-        const { error: itemError } =
-            await supabaseClient
-                .from("sale_items")
-                .delete()
-                .eq("sale_id", saleId);
-
-        if (itemError) {
-            throw itemError;
-        }
-
-        const { error: saleError } =
-            await supabaseClient
-                .from("sales")
-                .delete()
-                .eq("id", saleId);
-
-        if (saleError) {
-            throw saleError;
-        }
-
-        alert("Transaksi berhasil dihapus.");
-
-        await loadSales();
-        await loadDashboard();
-
-    } catch (error) {
-
-        console.error(
-            "Gagal menghapus transaksi:",
-            error
-        );
-
-        alert("Transaksi gagal dihapus.");
-
-    }
 }
