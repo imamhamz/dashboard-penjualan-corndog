@@ -997,17 +997,6 @@ async function saveTransaction() {
             .value = "";
 
 
-        // Tutup form transaksi
-
-        document
-            .getElementById(
-                "formTransaksi"
-            )
-            .classList.add(
-                "hidden"
-            );
-
-
         // Refresh dashboard & riwayat
 
         await loadDashboard();
