@@ -1,69 +1,200 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Penjualan Corndog</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="style.css?v=4">
+    <meta
+        name="theme-color"
+        content="#8b451f"
+    >
+
+    <title>SheCorndog - POS</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css?v=5"
+    >
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <!-- HEADER -->
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
     <header class="header">
-        <div>
-            <h1>Penjualan Corndog</h1>
-            <p>Dashboard Penjualan</p>
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🌭
+            </div>
+
+            <div>
+
+                <h1>
+                    Corndog Cafe
+                </h1>
+
+                <p>
+                    Point of Sale
+                </p>
+
+            </div>
+
         </div>
 
-        <button id="btnTambahTransaksi" class="btn-primary">
-            + Tambah Penjualan
+
+        <button
+            id="btnTambahTransaksi"
+            class="btn-primary"
+            type="button"
+        >
+            <span>＋</span>
+            Tambah Penjualan
         </button>
+
     </header>
 
 
-    <!-- DASHBOARD CARDS -->
+
+    <!-- =========================================
+         DASHBOARD
+    ========================================== -->
 
     <section class="dashboard-cards">
 
-        <div class="card">
-            <span>Total Produk</span>
-            <strong id="totalProduk">0</strong>
+
+        <!-- TOTAL PRODUK -->
+
+        <div class="card stat-card">
+
+            <div class="stat-icon">
+                🌭
+            </div>
+
+            <div class="stat-content">
+
+                <span>
+                    Total Produk
+                </span>
+
+                <strong id="totalProduk">
+                    0
+                </strong>
+
+            </div>
+
         </div>
 
-        <div class="card">
-            <span>Total Transaksi</span>
-            <strong id="totalTransaksi">0</strong>
+
+
+        <!-- TOTAL TRANSAKSI -->
+
+        <div class="card stat-card">
+
+            <div class="stat-icon">
+                🧾
+            </div>
+
+            <div class="stat-content">
+
+                <span>
+                    Total Transaksi
+                </span>
+
+                <strong id="totalTransaksi">
+                    0
+                </strong>
+
+            </div>
+
         </div>
 
-        <div class="card">
-            <span>Total Penjualan</span>
-            <strong id="totalPenjualan">Rp 0</strong>
+
+
+        <!-- TOTAL PENJUALAN -->
+
+        <div class="card stat-card">
+
+            <div class="stat-icon">
+                💰
+            </div>
+
+            <div class="stat-content">
+
+                <span>
+                    Total Penjualan
+                </span>
+
+                <strong id="totalPenjualan">
+                    Rp 0
+                </strong>
+
+            </div>
+
         </div>
+
 
     </section>
 
 
-    <!-- FORM TRANSAKSI -->
 
-    <section id="formTransaksi" class="transaction-form hidden">
+    <!-- =========================================
+         FORM TRANSAKSI
+    ========================================== -->
+
+    <section
+        id="formTransaksi"
+        class="transaction-form hidden"
+    >
+
 
         <div class="form-header">
 
+
             <div>
-                <h2>Transaksi Baru</h2>
-                <p>Catat penjualan hari ini</p>
+
+                <div class="section-label">
+                    TRANSAKSI
+                </div>
+
+                <h2>
+                    Penjualan Baru
+                </h2>
+
+                <p>
+                    Catat pesanan pelanggan
+                </p>
+
             </div>
 
-            <button id="btnTutupForm" class="btn-close">
-                ✕
+
+            <button
+                id="btnTutupForm"
+                class="btn-close"
+                type="button"
+                aria-label="Tutup"
+            >
+                ×
             </button>
 
+
         </div>
+
 
 
         <!-- TANGGAL -->
@@ -71,7 +202,7 @@
         <div class="form-group">
 
             <label for="saleDate">
-                Tanggal
+                Tanggal Penjualan
             </label>
 
             <input
@@ -82,25 +213,28 @@
         </div>
 
 
-        <!-- PILIH PRODUK -->
+
+        <!-- PRODUK -->
 
         <div class="product-input">
+
 
             <div class="form-group">
 
                 <label for="productSelect">
-                    Produk
+                    Pilih Produk
                 </label>
 
                 <select id="productSelect">
 
                     <option value="">
-                        Pilih produk
+                        Pilih produk...
                     </option>
 
                 </select>
 
             </div>
+
 
 
             <div class="form-group quantity-group">
@@ -119,22 +253,40 @@
             </div>
 
 
+
             <button
                 id="btnTambahProduk"
                 class="btn-secondary"
                 type="button"
             >
-                + Tambah
+                ＋ Tambah
             </button>
+
 
         </div>
 
 
-        <!-- DAFTAR PRODUK TRANSAKSI -->
+
+        <!-- CART -->
 
         <div class="cart">
 
-            <h3>Daftar Pembelian</h3>
+            <div class="cart-title">
+
+                <div>
+
+                    <h3>
+                        Pesanan
+                    </h3>
+
+                    <span>
+                        Daftar produk yang dibeli
+                    </span>
+
+                </div>
+
+            </div>
+
 
             <div id="cartItems">
 
@@ -147,11 +299,19 @@
         </div>
 
 
+
         <!-- TOTAL -->
 
         <div class="total-box">
 
-            <span>Total</span>
+            <div>
+
+                <span>
+                    Total Pembayaran
+                </span>
+
+            </div>
+
 
             <strong id="transactionTotal">
                 Rp 0
@@ -160,27 +320,33 @@
         </div>
 
 
-        <!-- METODE PEMBAYARAN -->
 
-        <div class="form-group">
+        <!-- PEMBAYARAN -->
 
-    <div class="payment-title">
-        Metode Pembayaran
-    </div>
+        <div class="form-group payment-group">
 
-    <div class="payment-methods">
+            <div class="payment-title">
+                Metode Pembayaran
+            </div>
 
-        <label class="payment-option">
 
-            <input
-                type="radio"
-                name="payment"
-                value="Cash"
-            >
+            <div class="payment-methods">
 
-            <span>💵 Cash</span>
 
-        </label>
+                <label class="payment-option">
+
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="Cash"
+                    >
+
+                    <span>
+                        💵 Cash
+                    </span>
+
+                </label>
+
 
 
                 <label class="payment-option">
@@ -191,9 +357,12 @@
                         value="Transfer"
                     >
 
-                    <span>🏦 Transfer</span>
+                    <span>
+                        🏦 Transfer
+                    </span>
 
                 </label>
+
 
 
                 <label class="payment-option">
@@ -204,13 +373,17 @@
                         value="QRIS"
                     >
 
-                    <span>📱 QRIS</span>
+                    <span>
+                        📱 QRIS
+                    </span>
 
                 </label>
+
 
             </div>
 
         </div>
+
 
 
         <!-- SIMPAN -->
@@ -223,42 +396,73 @@
             Simpan Transaksi
         </button>
 
+
     </section>
 
 
-    <!-- DAFTAR PRODUK -->
+
+    <!-- =========================================
+         PRODUK
+    ========================================== -->
 
     <section class="section">
 
+
         <div class="section-header">
 
+
             <div>
-                <h2>Daftar Produk</h2>
-                <p>Menu yang tersedia</p>
+
+                <div class="section-label">
+                    MENU
+                </div>
+
+                <h2>
+                    Daftar Produk
+                </h2>
+
+                <p>
+                    Menu corndog yang tersedia
+                </p>
+
             </div>
+
 
         </div>
 
 
+
         <div class="table-container">
 
+
             <table>
+
 
                 <thead>
 
                     <tr>
 
-                        <th>ID</th>
+                        <th>
+                            ID
+                        </th>
 
-                        <th>Produk</th>
+                        <th>
+                            Produk
+                        </th>
 
-                        <th>Kategori</th>
+                        <th>
+                            Kategori
+                        </th>
 
-                        <th>Harga</th>
+                        <th>
+                            Harga
+                        </th>
 
                     </tr>
 
                 </thead>
+
+
 
                 <tbody id="productTable">
 
@@ -272,46 +476,79 @@
 
                 </tbody>
 
+
             </table>
 
+
         </div>
+
 
     </section>
 
 
-    <!-- RIWAYAT TRANSAKSI -->
+
+    <!-- =========================================
+         RIWAYAT TRANSAKSI
+    ========================================== -->
 
     <section class="section">
 
+
         <div class="section-header">
 
+
             <div>
-                <h2>Riwayat Transaksi</h2>
-                <p>Penjualan terbaru</p>
+
+                <div class="section-label">
+                    HISTORY
+                </div>
+
+                <h2>
+                    Riwayat Transaksi
+                </h2>
+
+                <p>
+                    Penjualan terbaru
+                </p>
+
             </div>
+
 
         </div>
 
 
+
         <div class="table-container">
 
+
             <table>
+
 
                 <thead>
 
                     <tr>
 
-                        <th>ID</th>
+                        <th>
+                            ID
+                        </th>
 
-                        <th>Tanggal</th>
+                        <th>
+                            Tanggal
+                        </th>
 
-                        <th>Pembayaran</th>
+                        <th>
+                            Pembayaran
+                        </th>
 
-                        <th>Total</th>
+                        <th>
+                            Total
+                        </th>
 
                     </tr>
 
                 </thead>
+
+
 
                 <tbody id="salesTable">
 
@@ -325,20 +562,28 @@
 
                 </tbody>
 
+
             </table>
+
 
         </div>
 
+
     </section>
+
 
 </div>
 
 
-<!-- SUPABASE -->
+
+<!-- =========================================
+     SUPABASE
+========================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="script.js"></script>
+
 
 </body>
 
