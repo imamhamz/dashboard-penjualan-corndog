@@ -231,8 +231,6 @@ async function loadProducts() {
 
         displayProducts();
 
-        populateProductSelect();
-
         updateTotalProduk();
 
     }
