@@ -233,7 +233,7 @@ function displayProducts() {
     const filteredProducts =
         products.filter(function (product) {
 
-                    Console.log(
+                    console.log(
                         "PRODUK:",
                         product.name,
                         "| KATEGORI:",
