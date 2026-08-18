@@ -233,6 +233,13 @@ function displayProducts() {
     const filteredProducts =
         products.filter(function (product) {
 
+                    Console.log(
+                        "PRODUK:",
+                        product.name,
+                        "| KATEGORI:",
+                        product.category
+                    );
+
             // ------------------------------
             // FILTER KATEGORI
             // ------------------------------
@@ -244,7 +251,7 @@ function displayProducts() {
 
             const categoryMatch =
                 activeCategory === "all" ||
-                productCategory.includes(
+                productCategory ===
                     activeCategory.toLowerCase();
 
 
