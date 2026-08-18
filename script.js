@@ -23,6 +23,9 @@ const supabaseClient =
 let products = [];
 let cart = [];
 
+// FILTER PRODUK
+let activeCategory = "all";
+let searchKeyword = "";
 
 // ==========================================
 // SAAT HALAMAN SELESAI DIMUAT
@@ -41,6 +44,8 @@ document.addEventListener(
         loadSales();
         
         setupButtons();
+
+        setupProductFilters();
 
     }
 );
@@ -204,6 +209,7 @@ async function loadProducts() {
 
 // ==========================================
 // TAMPILKAN PRODUK DI KATALOG POS
+// DENGAN FILTER + SEARCH
 // ==========================================
 
 function displayProducts() {
@@ -213,63 +219,124 @@ function displayProducts() {
 
     if (!grid) return;
 
-    if (products.length === 0) {
+
+    // ======================================
+    // FILTER DATA PRODUK
+    // ======================================
+
+    const keyword =
+        searchKeyword
+            .toLowerCase()
+            .trim();
+
+
+    const filteredProducts =
+        products.filter(function (product) {
+
+            // ------------------------------
+            // FILTER KATEGORI
+            // ------------------------------
+
+            const productCategory =
+                String(product.category || "")
+                    .toLowerCase()
+                    .trim();
+
+            const categoryMatch =
+                activeCategory === "all" ||
+                productCategory ===
+                    activeCategory.toLowerCase();
+
+
+            // ------------------------------
+            // FILTER PENCARIAN
+            // ------------------------------
+
+            const productName =
+                String(product.name || "")
+                    .toLowerCase();
+
+            const searchMatch =
+                keyword === "" ||
+                productName.includes(keyword) ||
+                productCategory.includes(keyword);
+
+
+            return categoryMatch && searchMatch;
+
+        });
+
+
+    // ======================================
+    // TIDAK ADA HASIL
+    // ======================================
+
+    if (filteredProducts.length === 0) {
 
         grid.innerHTML = `
             <div class="product-loading">
-                Belum ada produk
+                Produk tidak ditemukan
             </div>
         `;
 
         return;
     }
 
-    grid.innerHTML = products.map(function(product) {
 
-        return `
-            <button
-                type="button"
-                class="product-card"
-                data-product-id="${product.id}"
-            >
+    // ======================================
+    // TAMPILKAN PRODUK
+    // ======================================
 
-                <div class="product-image">
-                    🌭
-                </div>
+    grid.innerHTML =
+        filteredProducts.map(function(product) {
 
-                <div class="product-card-body">
+            return `
+                <button
+                    type="button"
+                    class="product-card"
+                    data-product-id="${product.id}"
+                >
 
-                    <div class="product-category">
-                        ${product.category || "Menu"}
+                    <div class="product-image">
+                        🌭
                     </div>
 
-                    <div class="product-name">
-                        ${product.name}
+
+                    <div class="product-card-body">
+
+                        <div class="product-category">
+                            ${product.category || "Menu"}
+                        </div>
+
+
+                        <div class="product-name">
+                            ${product.name}
+                        </div>
+
+
+                        <div class="product-card-footer">
+
+                            <strong>
+                                ${formatRupiah(product.price)}
+                            </strong>
+
+                            <span class="product-add">
+                                +
+                            </span>
+
+                        </div>
+
                     </div>
 
-                    <div class="product-card-footer">
+                </button>
+            `;
 
-                        <strong>
-                            ${formatRupiah(product.price)}
-                        </strong>
-
-                        <span class="product-add">
-                            +
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </button>
-        `;
-
-    }).join("");
+        }).join("");
 
 
-    // ==========================================
-    // KLIK PRODUK
-    // ==========================================
+    // ======================================
+    // EVENT KLIK PRODUK
+    // ======================================
 
     grid.querySelectorAll(".product-card")
         .forEach(function(card) {
@@ -283,6 +350,7 @@ function displayProducts() {
                             card.dataset.productId
                         );
 
+
                     addProductDirect(productId);
 
                 }
@@ -292,7 +360,95 @@ function displayProducts() {
 
 }
 
+// ==========================================
+// FILTER KATEGORI
+// ==========================================
 
+function setupProductFilters() {
+
+    const categoryButtons =
+        document.querySelectorAll(
+            ".category-tab"
+        );
+
+
+    categoryButtons.forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    // --------------------------
+                    // SIMPAN KATEGORI AKTIF
+                    // --------------------------
+
+                    activeCategory =
+                        button.dataset.category ||
+                        "all";
+
+
+                    // --------------------------
+                    // UBAH TOMBOL AKTIF
+                    // --------------------------
+
+                    categoryButtons.forEach(
+                        function(btn) {
+
+                            btn.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    // --------------------------
+                    // TAMPILKAN PRODUK
+                    // --------------------------
+
+                    displayProducts();
+
+                }
+            );
+
+        }
+    );
+
+
+    // ======================================
+    // SEARCH PRODUK
+    // ======================================
+
+    const searchInput =
+        document.getElementById(
+            "productSearch"
+        );
+
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            function() {
+
+                searchKeyword =
+                    searchInput.value;
+
+
+                displayProducts();
+
+            }
+        );
+
+    }
+
+}
 
 // ==========================================
 // TAMBAH PRODUK LANGSUNG DARI KATALOG POS
